@@ -35,16 +35,15 @@ namespace CoolParking.BL.Services
 
         public int GetCapacity() => Parking.Capacity;
 
+        public int GetFreePlaces() => Parking.FreePlaces;
+
         public void Dispose()
         {
             throw new System.NotImplementedException();
         }
 
        
-        public int GetFreePlaces()
-        {
-            throw new System.NotImplementedException();
-        }
+        
 
         public TransactionInfo[] GetLastParkingTransactions()
         {

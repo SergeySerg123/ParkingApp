@@ -14,6 +14,7 @@ namespace CoolParking.BL.Models
         private Parking instance = null;
 
         public int Capacity { get; private set; }
+        public int FreePlaces { get; private set; }
         public decimal Balance { get; private set; } = 0;
         private readonly List<Vehicle> Vehicles = new List<Vehicle>();
 
@@ -41,6 +42,7 @@ namespace CoolParking.BL.Models
 
         public ReadOnlyCollection<Vehicle> GetVehicles
             => new ReadOnlyCollection<Vehicle>(Vehicles);
+
     }
 }
 
