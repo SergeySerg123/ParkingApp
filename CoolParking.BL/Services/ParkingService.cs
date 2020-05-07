@@ -14,7 +14,7 @@ namespace CoolParking.BL.Services
     {
         private readonly Parking Parking;
 
-        public ParkingService()
+        public ParkingService(ITimerService withdrawTimer, ITimerService logTimer, ILogService logService)
         {
             Parking = Parking.GetInstance();
         }
