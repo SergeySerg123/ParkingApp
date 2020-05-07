@@ -5,6 +5,7 @@
 
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace CoolParking.BL.Models
 {
@@ -14,8 +15,7 @@ namespace CoolParking.BL.Models
 
         public int Capacity { get; private set; }
         public decimal Balance { get; private set; } = 0;
-        private IDictionary<string, Vehicle> Vehicles = new Dictionary<string, Vehicle>();
-
+        private readonly List<Vehicle> Vehicles = new List<Vehicle>();
 
         private Parking() { }
 
@@ -30,13 +30,17 @@ namespace CoolParking.BL.Models
 
         public void AddVehicle(Vehicle vehicle)
         {
-            Vehicles.Add(vehicle.Id, vehicle);
+            Vehicles.Add(vehicle);
         }
 
         public void RemoveVehicle(string id)
         {
-            Vehicles.Remove(id);
+            var vehicle = Vehicles.Find(v => v.Id == id);
+            Vehicles.Remove(vehicle);
         }
+
+        public ReadOnlyCollection<Vehicle> GetVehicles
+            => new ReadOnlyCollection<Vehicle>(Vehicles);
     }
 }
 
