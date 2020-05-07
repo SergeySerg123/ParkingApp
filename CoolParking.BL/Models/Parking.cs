@@ -12,8 +12,10 @@ namespace CoolParking.BL.Models
     {
         private Parking instance = null;
 
+        public int Capacity { get; private set; }
         public decimal Balance { get; private set; } = 0;
         private IDictionary<string, Vehicle> Vehicles = new Dictionary<string, Vehicle>();
+
 
         private Parking() { }
 
