@@ -29,6 +29,8 @@ namespace CoolParking.BL.Services
             Parking.RemoveVehicle(vehicleId);
         }
 
+        public ReadOnlyCollection<Vehicle> GetVehicles() => Parking.GetVehicles;
+
         public decimal GetBalance() => Parking.Balance;
 
         public int GetCapacity() => Parking.Capacity;
@@ -49,10 +51,7 @@ namespace CoolParking.BL.Services
             throw new System.NotImplementedException();
         }
 
-        public ReadOnlyCollection<Vehicle> GetVehicles()
-        {
-            throw new System.NotImplementedException();
-        }
+        
 
         public string ReadFromLog()
         {
