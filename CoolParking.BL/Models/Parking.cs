@@ -3,6 +3,7 @@
 //       of the home task and be consistent with other classes and tests.
 
 
+
 using System.Collections.Generic;
 
 namespace CoolParking.BL.Models
@@ -12,7 +13,7 @@ namespace CoolParking.BL.Models
         private Parking instance = null;
 
         public decimal Balance { get; private set; } = 0;
-        private List<Vehicle> Vehicles = new List<Vehicle>();
+        private IDictionary<string, Vehicle> Vehicles = new Dictionary<string, Vehicle>();
 
         private Parking() { }
 
@@ -27,12 +28,12 @@ namespace CoolParking.BL.Models
 
         public void AddVehicle(Vehicle vehicle)
         {
-            Vehicles.Add(vehicle);
+            Vehicles.Add(vehicle.Id, vehicle);
         }
 
         public void RemoveVehicle(string id)
         {
-
+            Vehicles.Remove(id);
         }
     }
 }
