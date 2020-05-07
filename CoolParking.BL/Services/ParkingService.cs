@@ -12,7 +12,7 @@ namespace CoolParking.BL.Services
 {
     public class ParkingService : IParkingService
     {
-        private Parking Parking;
+        private readonly Parking Parking;
 
         public ParkingService()
         {
@@ -26,18 +26,18 @@ namespace CoolParking.BL.Services
 
         public void RemoveVehicle(string vehicleId)
         {
-            throw new System.NotImplementedException();
+            Parking.RemoveVehicle(vehicleId);
         }
+
+        public decimal GetBalance() => Parking.Balance;
+
 
         public void Dispose()
         {
             throw new System.NotImplementedException();
         }
 
-        public decimal GetBalance()
-        {
-            throw new System.NotImplementedException();
-        }
+        
 
         public int GetCapacity()
         {
