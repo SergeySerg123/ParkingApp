@@ -7,7 +7,14 @@
 //       Static method GenerateRandomRegistrationPlateNumber should return a randomly generated unique identifier.
 public class Vehicle
 {
-    public string Id { get; set; }
-    public VehicleType VehicleType { get; set; }
-    public decimal Balance { get; set; }
+    public string Id { get; private set; }
+    public VehicleType VehicleType { get; private set; }
+    public decimal Balance { get; private set; }
+
+    public Vehicle(string id, VehicleType type, decimal b)
+    {
+        Id = id;
+        VehicleType = type;
+        Balance = b;
+    }
 }
