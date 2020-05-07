@@ -31,19 +31,14 @@ namespace CoolParking.BL.Services
 
         public decimal GetBalance() => Parking.Balance;
 
+        public int GetCapacity() => Parking.Capacity;
 
         public void Dispose()
         {
             throw new System.NotImplementedException();
         }
 
-        
-
-        public int GetCapacity()
-        {
-            throw new System.NotImplementedException();
-        }
-
+       
         public int GetFreePlaces()
         {
             throw new System.NotImplementedException();
