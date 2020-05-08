@@ -6,6 +6,7 @@
 //       and tests, for example, in ParkingServiceTests you can find the necessary constructor format and validation rules.
 using CoolParking.BL.Interfaces;
 using CoolParking.BL.Models;
+using System;
 using System.Collections.ObjectModel;
 
 namespace CoolParking.BL.Services
@@ -15,11 +16,13 @@ namespace CoolParking.BL.Services
         private readonly Parking Parking;
         private TransactionInfo transactionInfo;
         private readonly ILogService _logService;
+        private readonly ITransactionService _transactionService;
 
         public ParkingService(ITimerService withdrawTimer, ITimerService logTimer, ILogService logService)
         {
             this.Parking = Parking.GetInstance();
             _logService = logService;
+            _transactionService = new TransactionService();
         }
 
         public void TransactionInfoInstance()
@@ -57,7 +60,7 @@ namespace CoolParking.BL.Services
              
         public TransactionInfo[] GetLastParkingTransactions()
         {
-            throw new System.NotImplementedException();
+            return _transactionService.GetLastParkingTransactions();
         }
 
         public string ReadFromLog()
