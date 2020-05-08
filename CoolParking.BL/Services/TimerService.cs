@@ -2,15 +2,38 @@
 //       Service have to be just wrapper on System Timers.
 
 using CoolParking.BL.Interfaces;
+using System;
 using System.Timers;
 
 namespace CoolParking.BL.Services
 {
     public class TimerService : ITimerService
     {
-        public double Interval { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        private readonly Timer timer;
+        public double Interval { get; set; }
+        public TimerService(int interval)
+        {
+            Interval = interval;
+            timer = new Timer
+            {
+                Interval = Interval,
+                AutoReset = true
+            };
+            Elapsed += OnTimedEvent;
+        }
 
+        
         public event ElapsedEventHandler Elapsed;
+
+        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        {
+
+        }
+
+        public void FireElapsedEvent()
+        {
+            Elapsed?.Invoke(this, null);
+        }
 
         public void Dispose()
         {
@@ -19,12 +42,12 @@ namespace CoolParking.BL.Services
 
         public void Start()
         {
-            throw new System.NotImplementedException();
+            timer.Enabled = true;
         }
 
         public void Stop()
         {
-            throw new System.NotImplementedException();
+            timer.Enabled = false;
         }
     }
 }
