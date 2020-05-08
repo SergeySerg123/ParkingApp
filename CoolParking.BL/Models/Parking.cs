@@ -4,6 +4,7 @@
 
 
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -11,36 +12,46 @@ namespace CoolParking.BL.Models
 {
     public class Parking 
     {
-        private Parking instance = null;
+        private static Parking instance = null;
 
         public int Capacity { get; private set; }
-        public int FreePlaces { get; private set; }
-        public decimal Balance { get; private set; } = 0;
+        public decimal Balance { get; private set; }
         private readonly List<Vehicle> Vehicles = new List<Vehicle>();
+        private int Busy;
+
+        public int GetFreePlaces() => Capacity - Busy;
 
         private Parking() { }
 
-        public Parking GetInstance()
+        public static Parking GetInstance()
         {
             if (instance == null)
             {
                 instance = new Parking();
+                instance.Capacity = Settings.Capacity;
+                instance.Busy = 0;
             }
             return instance;
         }
 
         public void AddVehicle(Vehicle vehicle)
         {
+            Vehicle v = GetVehicle(vehicle.Id);
+            if (v != null)
+            {
+                throw new ArgumentException();
+            } 
             Vehicles.Add(vehicle);
         }
 
         public void RemoveVehicle(string vehicleId)
         {
             Vehicle vehicle = GetVehicle(vehicleId);
-            if (vehicle != null)
+            if (vehicle == null)
             {
-                Vehicles.Remove(vehicle);
-            }         
+                throw new ArgumentException();
+            }
+            Vehicles.Remove(vehicle);
         }
 
         public void TopUpVehicle(string vehicleId, decimal sum)
