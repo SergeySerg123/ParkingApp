@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 
 namespace CoolParking.BL.Models
 {
@@ -40,7 +41,7 @@ namespace CoolParking.BL.Models
             if (v != null)
             {
                 throw new ArgumentException();
-            } 
+            }
             Vehicles.Add(vehicle);
         }
 
@@ -57,10 +58,11 @@ namespace CoolParking.BL.Models
         public void TopUpVehicle(string vehicleId, decimal sum)
         {
             Vehicle vehicle = GetVehicle(vehicleId);
-            if (vehicle != null)
+            if (vehicle == null || sum < 0)
             {
-                vehicle.TopUpVehicle(sum);
+                throw new ArgumentException();
             }
+            vehicle.TopUpVehicle(sum);
         }
 
         public ReadOnlyCollection<Vehicle> GetVehicles
