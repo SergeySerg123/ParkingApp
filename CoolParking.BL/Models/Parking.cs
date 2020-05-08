@@ -34,15 +34,32 @@ namespace CoolParking.BL.Models
             Vehicles.Add(vehicle);
         }
 
-        public void RemoveVehicle(string id)
+        public void RemoveVehicle(string vehicleId)
         {
-            var vehicle = Vehicles.Find(v => v.Id == id);
-            Vehicles.Remove(vehicle);
+            Vehicle vehicle = GetVehicle(vehicleId);
+            if (vehicle != null)
+            {
+                Vehicles.Remove(vehicle);
+            }         
+        }
+
+        public void TopUpVehicle(string vehicleId, decimal sum)
+        {
+            Vehicle vehicle = GetVehicle(vehicleId);
+            if (vehicle != null)
+            {
+                vehicle.TopUpVehicle(sum);
+            }
         }
 
         public ReadOnlyCollection<Vehicle> GetVehicles
             => new ReadOnlyCollection<Vehicle>(Vehicles);
 
+        private Vehicle GetVehicle(string vehicleId)
+        {
+            Vehicle vehicle = Vehicles?.Find(v => v.Id == vehicleId);
+            return vehicle;
+        }
     }
 }
 
