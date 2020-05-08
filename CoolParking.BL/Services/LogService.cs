@@ -21,12 +21,12 @@ namespace CoolParking.BL.Services
         {
             try
             {
-                string actual;
+                string s;
                 using (var file = new StreamReader(LogPath))
                 {
-                    actual = file.ReadToEnd();
+                    s = file.ReadToEnd();
                 }
-                return actual;
+                return s;
             } catch (Exception ex)
             {
                 throw new InvalidOperationException();
