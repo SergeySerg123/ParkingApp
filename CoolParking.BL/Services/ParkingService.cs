@@ -13,10 +13,18 @@ namespace CoolParking.BL.Services
     public class ParkingService : IParkingService
     {
         private readonly Parking Parking;
+        private TransactionInfo transactionInfo;
+        private readonly ILogService _logService;
 
         public ParkingService(ITimerService withdrawTimer, ITimerService logTimer, ILogService logService)
         {
-            Parking = Parking.GetInstance();
+            this.Parking = Parking.GetInstance();
+            _logService = logService;
+        }
+
+        public void TransactionInfoInstance()
+        {
+            transactionInfo = new TransactionInfo();
         }
 
         public void AddVehicle(Vehicle vehicle)
@@ -29,39 +37,33 @@ namespace CoolParking.BL.Services
             Parking.RemoveVehicle(vehicleId);
         }
 
+        public void TopUpVehicle(string vehicleId, decimal sum)
+        {
+            Parking.TopUpVehicle(vehicleId, sum);
+        }
+
         public ReadOnlyCollection<Vehicle> GetVehicles() => Parking.GetVehicles;
 
         public decimal GetBalance() => Parking.Balance;
 
         public int GetCapacity() => Parking.Capacity;
 
-        public int GetFreePlaces() => Parking.FreePlaces;
+        public int GetFreePlaces() => Parking.GetFreePlaces();
 
         public void Dispose()
         {
-            throw new System.NotImplementedException();
+            
         }
-
-       
-        
-
+             
         public TransactionInfo[] GetLastParkingTransactions()
         {
             throw new System.NotImplementedException();
         }
 
-        
-
         public string ReadFromLog()
         {
-            throw new System.NotImplementedException();
-        }
-
-        
-
-        public void TopUpVehicle(string vehicleId, decimal sum)
-        {
-            throw new System.NotImplementedException();
+            string s = _logService.Read();
+            return s;
         }
     }
 }
