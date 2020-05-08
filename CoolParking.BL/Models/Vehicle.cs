@@ -20,5 +20,10 @@ namespace CoolParking.BL.Models
             VehicleType = type;
             Balance = b;
         }
+
+        public void TopUpVehicle(decimal sum)
+        {
+            Balance += sum;
+        }
     }
 }
