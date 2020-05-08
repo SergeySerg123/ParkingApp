@@ -14,7 +14,6 @@ namespace CoolParking.BL.Services
     public class ParkingService : IParkingService
     {
         private readonly Parking Parking;
-        private TransactionInfo transactionInfo;
         private readonly ILogService _logService;
         private readonly ITransactionService _transactionService;
 
@@ -23,11 +22,6 @@ namespace CoolParking.BL.Services
             this.Parking = Parking.GetInstance();
             _logService = logService;
             _transactionService = new TransactionService();
-        }
-
-        public void TransactionInfoInstance()
-        {
-            transactionInfo = new TransactionInfo();
         }
 
         public void AddVehicle(Vehicle vehicle)
