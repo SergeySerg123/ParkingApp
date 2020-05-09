@@ -55,6 +55,18 @@ namespace CoolParking.BL.Models
             Vehicles.Remove(vehicle);
         }
 
+        public void TopUpParking(decimal sum)
+        {
+            Balance += sum;
+        }
+        public decimal WithdrawFromVechicle(Vehicle v, decimal sum) 
+        {
+            var balance = v.Balance;
+            decimal actualSum = ((balance - sum) < 0) ? sum * (decimal)Settings.PenaltyRatio : sum;
+            v.Withdraw(actualSum);
+            return actualSum;
+        }
+
         public void TopUpVehicle(string vehicleId, decimal sum)
         {
             Vehicle vehicle = GetVehicle(vehicleId);
