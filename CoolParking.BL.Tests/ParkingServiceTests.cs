@@ -12,13 +12,13 @@ namespace CoolParking.BL.Tests
     {
         readonly ParkingService _parkingService;
         readonly TimerService _withdrawTimer;
-        readonly FakeTimerService _logTimer;
+        readonly TimerService _logTimer;
         readonly ILogService _logService;
 
         public ParkingServiceTests()
         {
             _withdrawTimer = new TimerService();
-            _logTimer = new FakeTimerService();
+            _logTimer = new TimerService();
             _logService = A.Fake<ILogService>();
             _parkingService = new ParkingService(_withdrawTimer, _logTimer, _logService);
         }
