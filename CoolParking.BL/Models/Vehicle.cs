@@ -39,5 +39,10 @@ namespace CoolParking.BL.Models
         {
             Balance += sum;
         }
+
+        public void Withdraw(decimal sum)
+        {
+            Balance -= sum;
+        }
     }
 }
