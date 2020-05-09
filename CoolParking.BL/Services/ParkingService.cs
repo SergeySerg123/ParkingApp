@@ -16,12 +16,16 @@ namespace CoolParking.BL.Services
         private readonly Parking Parking;
         private readonly ILogService _logService;
         private readonly ITransactionService _transactionService;
+        private readonly ITimerService _withdrawTimer;
+        private readonly ITimerService _logTimer;
 
         public ParkingService(ITimerService withdrawTimer, ITimerService logTimer, ILogService logService)
         {
             this.Parking = Parking.GetInstance();
             _logService = logService;
-            _transactionService = new TransactionService();
+            _transactionService = TransactionService.GetInstance();
+            _withdrawTimer = withdrawTimer;
+            _logTimer = logTimer;
         }
 
         public void AddVehicle(Vehicle vehicle)
@@ -39,6 +43,7 @@ namespace CoolParking.BL.Services
             Parking.TopUpVehicle(vehicleId, sum);
         }
 
+       
         public ReadOnlyCollection<Vehicle> GetVehicles() => Parking.GetVehicles;
 
         public decimal GetBalance() => Parking.Balance;
