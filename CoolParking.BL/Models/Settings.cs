@@ -10,7 +10,7 @@ namespace CoolParking.BL.Models
         public static int EveryTimeWriteToLog = 60;
         public static double PenaltyRatio = 2.5;
 
-        public static double GetPrice(VehicleType type)
+        public static decimal GetPrice(VehicleType type)
         {
             switch (type)
             {
@@ -18,7 +18,7 @@ namespace CoolParking.BL.Models
                     return 2;
 
                 case VehicleType.Bus:
-                    return 3.5;
+                    return 3.5M;
 
                 case VehicleType.Motorcycle:
                     return 1;
