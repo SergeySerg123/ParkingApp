@@ -24,7 +24,7 @@ namespace CoolParking.BL
             Console.WriteLine("6 - список транспортных средств в паркинге");
         }
 
-        public (bool, int) Select(string value)
+        public Tuple<bool, int> Select(string value)
         {
             int num = 0;
             try
@@ -39,10 +39,10 @@ namespace CoolParking.BL
             if(!(num >= 1 && num <= 6))
             {
                 ivm.IsOutFromMenuNumsRange();
-                return (true, num);
+                return new Tuple<bool, int>(true, num);
             }
 
-            return (false, num);
+            return new Tuple<bool, int>(false, num);
         }
 
     }
