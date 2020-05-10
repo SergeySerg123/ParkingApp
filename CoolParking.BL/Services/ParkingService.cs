@@ -68,15 +68,16 @@ namespace CoolParking.BL.Services
             if (disposing)
             {
                 Parking.Distruct();
+                _logTimer.Dispose();
             }
 
             disposed = true;
         }
 
-        ~ParkingService()
-        {
-            Dispose(false);
-        }
+        //~ParkingService()
+        //{
+        //    Dispose(false);
+        //}
 
         public TransactionInfo[] GetLastParkingTransactions()
         {
