@@ -76,9 +76,9 @@ namespace CoolParking.BL.Models
             vehicle.TopUpVehicle(sum);
         }
 
-        public void ClearVehicles()
+        public void Distruct()
         {
-            Vehicles.Clear();
+            instance = null;
         }
 
         public ReadOnlyCollection<Vehicle> GetVehicles

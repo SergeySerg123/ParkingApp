@@ -67,12 +67,15 @@ namespace CoolParking.BL.Services
 
             if (disposing)
             {
-                Parking.ClearVehicles();
-                // Free any other managed objects here.
-                //
+                Parking.Distruct();
             }
 
             disposed = true;
+        }
+
+        ~ParkingService()
+        {
+            Dispose(false);
         }
 
         public TransactionInfo[] GetLastParkingTransactions()
