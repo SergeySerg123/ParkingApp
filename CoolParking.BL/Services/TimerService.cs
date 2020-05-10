@@ -17,7 +17,7 @@ namespace CoolParking.BL.Services
         public TimerService()
         {
             timer = new Timer();
-            Elapsed += OnTimedEvent;
+            Start();
         }
 
         
@@ -40,16 +40,18 @@ namespace CoolParking.BL.Services
 
         public void Dispose()
         {
-            throw new System.NotImplementedException();
+            GC.SuppressFinalize(this);
         }
 
         public void Start()
         {
+            Elapsed += OnTimedEvent;
             timer.Enabled = true;
         }
 
         public void Stop()
         {
+            Elapsed -= OnTimedEvent;
             timer.Enabled = false;
         }
     }
