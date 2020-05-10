@@ -1,14 +1,19 @@
 ﻿// TODO: implement class Settings.
 //       Implementation details are up to you, they just have to meet the requirements of the home task.
+using System.IO;
+using System.Reflection;
+
 namespace CoolParking.BL.Models
 {
     public static class Settings
     {
-        public static decimal InitialSum = 0;
-        public static int Capacity = 10;
-        public static int EveryTimePay = 5;
-        public static int EveryTimeWriteToLog = 60;
-        public static double PenaltyRatio = 2.5;
+        public static readonly decimal InitialSum = 0;
+        public static readonly int Capacity = 10;
+        public static readonly int EveryTimePay = 5;
+        public static readonly int EveryTimeWriteToLog = 60;
+        public static readonly double PenaltyRatio = 2.5;
+
+        public static readonly string _logFilePath = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Transactions.log";
 
         public static decimal GetPrice(VehicleType type)
         {
