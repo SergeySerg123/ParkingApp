@@ -6,8 +6,10 @@ using Xunit;
 using FakeItEasy;
 using CoolParking.BL.Services;
 
+[assembly: CollectionBehavior(DisableTestParallelization = false)]
 namespace CoolParking.BL.Tests
 {
+    
     public class ParkingServiceTests : IDisposable
     {
         readonly ParkingService _parkingService;

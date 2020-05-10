@@ -18,10 +18,11 @@ namespace CoolParking.BL.Services
         private readonly ITransactionService _transactionService;
         private readonly ITimerService _withdrawTimer;
         private readonly ITimerService _logTimer;
+        bool disposed = false;
 
         public ParkingService(ITimerService withdrawTimer, ITimerService logTimer, ILogService logService)
         {
-            this.Parking = Parking.GetInstance();
+            Parking = Parking.GetInstance();
             _logService = logService;
             _transactionService = TransactionService.GetInstance();
             _withdrawTimer = withdrawTimer;
@@ -54,9 +55,26 @@ namespace CoolParking.BL.Services
 
         public void Dispose()
         {
-            
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
-             
+
+        // Protected implementation of Dispose pattern.
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                Parking.ClearVehicles();
+                // Free any other managed objects here.
+                //
+            }
+
+            disposed = true;
+        }
+
         public TransactionInfo[] GetLastParkingTransactions()
         {
             return _transactionService.GetLastParkingTransactions();

@@ -7,7 +7,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
 
 namespace CoolParking.BL.Models
 {
@@ -75,6 +74,11 @@ namespace CoolParking.BL.Models
                 throw new ArgumentException();
             }
             vehicle.TopUpVehicle(sum);
+        }
+
+        public void ClearVehicles()
+        {
+            Vehicles.Clear();
         }
 
         public ReadOnlyCollection<Vehicle> GetVehicles
