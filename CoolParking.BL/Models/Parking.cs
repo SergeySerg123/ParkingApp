@@ -4,6 +4,8 @@
 
 
 
+using CoolParking.BL.Interfaces;
+using CoolParking.BL.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +15,7 @@ namespace CoolParking.BL.Models
     public class Parking 
     {
         private static Parking instance = null;
+        private ILogService _logService = new LogService(Settings._logFilePath);
 
         public int Capacity { get; private set; }
         public decimal Balance { get; private set; }
@@ -74,6 +77,11 @@ namespace CoolParking.BL.Models
                 throw new ArgumentException();
             }
             vehicle.TopUpVehicle(sum);
+        }
+
+        public void WriteToLog(string mess)
+        {
+            _logService.Write(mess);
         }
 
         public void Distruct()
