@@ -116,6 +116,22 @@ namespace CoolParking.BL
 
                     
                     break;
+
+                case 8:
+                    var transactions = _parkingService.GetLastParkingTransactions();
+                    if(transactions.Length == 0)
+                    {
+
+                    } else
+                    {
+                        Console.WriteLine($"No transactions");
+                    }
+                    foreach(var t in transactions)
+                    {
+                        Console.WriteLine($"{t.VechicleId}-{t.DateTime.ToString()}-{t.Sum}");
+                    }
+                    break;
+
             }
 
             showMenu = true;
