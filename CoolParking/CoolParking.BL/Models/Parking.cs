@@ -61,6 +61,12 @@ namespace CoolParking.BL.Models
             {
                 throw new ArgumentException();
             }
+
+            if (vehicle.Balance < 0)
+            {
+                throw new InvalidOperationException();
+            }
+
             Vehicles.Remove(vehicle);
         }
 
