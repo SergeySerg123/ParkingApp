@@ -54,7 +54,14 @@ namespace CoolParking.BL
                     Console.WriteLine("Parking started!");
                     Console.WriteLine("=====================");
                     break;
-                
+
+                case 2:
+                    _withdrawTimer.Stop();
+                    Console.WriteLine("=====================");
+                    Console.WriteLine("Parking stoped!");
+                    Console.WriteLine("=====================");
+                    break;
+
                 case 3:
                     Vehicle v = dg.GenerateVehicle();
                     _parkingService.AddVehicle(v);
@@ -119,17 +126,17 @@ namespace CoolParking.BL
 
                 case 8:
                     var transactions = _parkingService.GetLastParkingTransactions();
-                    if(transactions.Length == 0)
+                    if(transactions.Length != 0)
                     {
-
+                        foreach (var t in transactions)
+                        {
+                            Console.WriteLine($"VehicleID:{t.VechicleId}, Time: {t.DateTime.ToString()}, Sum: {t.Sum}");
+                        }
                     } else
                     {
                         Console.WriteLine($"No transactions");
                     }
-                    foreach(var t in transactions)
-                    {
-                        Console.WriteLine($"{t.VechicleId}-{t.DateTime.ToString()}-{t.Sum}");
-                    }
+                    
                     break;
 
             }

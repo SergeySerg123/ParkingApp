@@ -24,6 +24,7 @@ namespace CoolParking.BL
             Console.WriteLine("5 - колличество свободных мест в паркинге");
             Console.WriteLine("6 - список транспортных средств в паркинге");
             Console.WriteLine("7 - пополнить баланс транспортного средства");
+            Console.WriteLine("8 - вывести все транзакции за период работы паркинга");
             Console.WriteLine("======================================");
         }
 
@@ -39,7 +40,7 @@ namespace CoolParking.BL
                 ivm.IsNotNumber();
             }
 
-            if(!(num >= 1 && num <= 7))
+            if(!(num >= 1 && num <= 8))
             {
                 ivm.IsOutFromMenuNumsRange();
                 return new Tuple<bool, int>(true, num);

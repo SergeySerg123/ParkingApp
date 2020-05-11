@@ -17,6 +17,10 @@ namespace CoolParking.BL.Services
         public TimerService()
         {
             Elapsed += OnTimedEvent;
+            timer = new Timer();
+            timer.Elapsed += Callback;
+            
+            timer.AutoReset = true;
         }
 
         
@@ -44,16 +48,12 @@ namespace CoolParking.BL.Services
 
         public void Start()
         {
-            timer = new Timer();
-            timer.Elapsed += Callback;
             timer.Interval = Interval;
-            timer.AutoReset = true;
             timer.Enabled = true;
         }
 
         public void Stop()
         {
-            Elapsed -= OnTimedEvent;
             timer.Enabled = false;
         }
 
