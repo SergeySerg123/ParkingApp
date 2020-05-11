@@ -44,6 +44,12 @@ namespace CoolParking.BL.Models
             {
                 throw new ArgumentException();
             }
+
+            if (Vehicles.Count >= 10)
+            {
+                throw new InvalidOperationException();
+            }
+
             Vehicles.Add(vehicle);
             Busy += 1;
         }
@@ -55,6 +61,12 @@ namespace CoolParking.BL.Models
             {
                 throw new ArgumentException();
             }
+
+            if (vehicle.Balance < 0)
+            {
+                throw new InvalidOperationException();
+            }
+
             Vehicles.Remove(vehicle);
         }
 
@@ -65,9 +77,15 @@ namespace CoolParking.BL.Models
         public decimal WithdrawFromVechicle(Vehicle v, decimal sum) 
         {
             var balance = v.Balance;
-            decimal actualSum = ((balance - sum) < 0) ? sum * (decimal)Settings.PenaltyRatio : sum;
+            decimal actualSum = ((balance - sum) < 0) ? sum * ApplyPenalty(balance, sum) : sum;
             v.Withdraw(actualSum);
             return actualSum;
+        }
+
+        private decimal ApplyPenalty(decimal balance, decimal sum)
+        {
+            decimal total = balance - sum;
+            return total * (decimal)Settings.PenaltyRatio;
         }
 
         public void TopUpVehicle(string vehicleId, decimal sum)
