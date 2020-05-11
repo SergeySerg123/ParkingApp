@@ -21,6 +21,8 @@ namespace CoolParking.BL
             var sb = ServiceBuilder
                 .CreateInstance();
             sb.Build();
+            _withdrawTimer.Interval = 5000;
+            //_logTimer.Interval = 60000;
             var dg = DataGenerator.CreateInstance();
             var ivm = InputValidatorMessages.CreateInstance();
             var menu = Menu.CreateInstance(ivm);
@@ -46,6 +48,12 @@ namespace CoolParking.BL
             
             switch (selectedNum)
             {
+                case 1:
+                    _withdrawTimer.Start();
+                    Console.WriteLine("=====================");
+                    Console.WriteLine("Parking started!");
+                    Console.WriteLine("=====================");
+                    break;
                 
                 case 3:
                     Vehicle v = dg.GenerateVehicle();

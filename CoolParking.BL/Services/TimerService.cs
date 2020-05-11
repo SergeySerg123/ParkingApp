@@ -11,13 +11,12 @@ namespace CoolParking.BL.Services
     public class TimerService : ITimerService
     {
         private ITransactionService _transactionService = TransactionService.GetInstance();
-        private readonly Timer timer;
+        private Timer timer;
 
         public double Interval { get; set; }
         public TimerService()
         {
-            timer = new Timer();
-            Start();
+            Elapsed += OnTimedEvent;
         }
 
         
@@ -45,8 +44,10 @@ namespace CoolParking.BL.Services
 
         public void Start()
         {
-            Elapsed += OnTimedEvent;
+            timer = new Timer();
+            timer.Elapsed += Callback;
             timer.Interval = Interval;
+            timer.AutoReset = true;
             timer.Enabled = true;
         }
 
@@ -55,5 +56,11 @@ namespace CoolParking.BL.Services
             Elapsed -= OnTimedEvent;
             timer.Enabled = false;
         }
+
+        private void Callback(Object source, ElapsedEventArgs e)
+        {
+            FireElapsedEvent();
+        }
+
     }
 }
