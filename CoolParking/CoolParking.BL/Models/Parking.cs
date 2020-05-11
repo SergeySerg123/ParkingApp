@@ -44,6 +44,12 @@ namespace CoolParking.BL.Models
             {
                 throw new ArgumentException();
             }
+
+            if (Vehicles.Count >= 10)
+            {
+                throw new InvalidOperationException();
+            }
+
             Vehicles.Add(vehicle);
             Busy += 1;
         }
