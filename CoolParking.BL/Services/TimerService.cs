@@ -46,6 +46,7 @@ namespace CoolParking.BL.Services
         public void Start()
         {
             Elapsed += OnTimedEvent;
+            timer.Interval = Interval;
             timer.Enabled = true;
         }
 
