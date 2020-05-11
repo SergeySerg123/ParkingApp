@@ -77,9 +77,15 @@ namespace CoolParking.BL.Models
         public decimal WithdrawFromVechicle(Vehicle v, decimal sum) 
         {
             var balance = v.Balance;
-            decimal actualSum = ((balance - sum) < 0) ? sum * (decimal)Settings.PenaltyRatio : sum;
+            decimal actualSum = ((balance - sum) < 0) ? sum * ApplyPenalty(balance, sum) : sum;
             v.Withdraw(actualSum);
             return actualSum;
+        }
+
+        private decimal ApplyPenalty(decimal balance, decimal sum)
+        {
+            decimal total = balance - sum;
+            return total * (decimal)Settings.PenaltyRatio;
         }
 
         public void TopUpVehicle(string vehicleId, decimal sum)

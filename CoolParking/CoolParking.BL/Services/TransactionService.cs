@@ -22,8 +22,12 @@ namespace CoolParking.BL.Services
 
         public void CreateTransaction(Parking p, Vehicle vehicle)
         {
-            var transactionInfo = Withdraw(p, vehicle);
-            transactions.AddParkingTransaction(transactionInfo);
+            if (vehicle != null)
+            {
+                var transactionInfo = Withdraw(p, vehicle);
+                transactions.AddParkingTransaction(transactionInfo);
+            }
+            
         }
 
         public TransactionInfo[] GetLastParkingTransactions()

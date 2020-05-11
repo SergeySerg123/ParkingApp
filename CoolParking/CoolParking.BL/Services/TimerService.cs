@@ -32,6 +32,7 @@ namespace CoolParking.BL.Services
             var vehicles = parking.GetVehicles;
             foreach(Vehicle v in vehicles)
             {
+              
                 _transactionService.CreateTransaction(parking, v);
             }
         }
