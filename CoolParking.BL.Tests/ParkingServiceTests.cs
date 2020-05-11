@@ -6,19 +6,21 @@ using Xunit;
 using FakeItEasy;
 using CoolParking.BL.Services;
 
+[assembly: CollectionBehavior(DisableTestParallelization = false)]
 namespace CoolParking.BL.Tests
 {
+    
     public class ParkingServiceTests : IDisposable
     {
         readonly ParkingService _parkingService;
-        readonly FakeTimerService _withdrawTimer;
-        readonly FakeTimerService _logTimer;
+        readonly TimerService _withdrawTimer;
+        readonly TimerService _logTimer;
         readonly ILogService _logService;
 
         public ParkingServiceTests()
         {
-            _withdrawTimer = new FakeTimerService();
-            _logTimer = new FakeTimerService();
+            _withdrawTimer = new TimerService();
+            _logTimer = new TimerService();
             _logService = A.Fake<ILogService>();
             _parkingService = new ParkingService(_withdrawTimer, _logTimer, _logService);
         }
@@ -31,7 +33,7 @@ namespace CoolParking.BL.Tests
         [Fact]
         public void Parking_IsSingelton()
         {
-            var newParkingService = ParkingService(_withdrawTimer, _logTimer, _logService);
+            var newParkingService = new ParkingService(_withdrawTimer, _logTimer, _logService);
             var vehicle = new Vehicle("AA-0001-AA", VehicleType.Truck, 100);
             _parkingService.AddVehicle(vehicle);  
 
