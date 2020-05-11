@@ -7,6 +7,7 @@
 //       Static method GenerateRandomRegistrationPlateNumber should return a randomly generated unique identifier.
 
 using System;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace CoolParking.BL.Models
@@ -43,6 +44,28 @@ namespace CoolParking.BL.Models
         public void Withdraw(decimal sum)
         {
             Balance -= sum;
+        }
+
+        public static string GenerateRandomRegistrationPlateNumber()
+        {
+            Random random = new Random();
+            int length = 4;
+            StringBuilder str_build = new StringBuilder();
+
+            char letter;
+
+            for (int i = 0; i < length; i++)
+            {
+                double flt = random.NextDouble();
+                int shift = Convert.ToInt32(Math.Floor(25 * flt));
+                letter = Convert.ToChar(shift + 65);
+                str_build.Append(letter);
+            }
+            int nums = random.Next(1111, 9999);
+            string s = str_build.ToString();
+            string fisrtPart = s.Substring(0, 2);
+            string secondPart = s.Substring(2, 2);
+            return $"{fisrtPart.ToUpper()}-{nums}-{secondPart.ToUpper()}";
         }
     }
 }
