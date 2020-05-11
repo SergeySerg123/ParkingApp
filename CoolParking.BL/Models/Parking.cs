@@ -45,6 +45,7 @@ namespace CoolParking.BL.Models
                 throw new ArgumentException();
             }
             Vehicles.Add(vehicle);
+            Busy += 1;
         }
 
         public void RemoveVehicle(string vehicleId)
