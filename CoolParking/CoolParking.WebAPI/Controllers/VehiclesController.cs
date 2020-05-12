@@ -1,4 +1,5 @@
 ﻿using CoolParking.WebAPI.Interfaces;
+using CoolParking.WebAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
@@ -19,6 +20,7 @@ namespace CoolParking.WebAPI.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Get()
         {
             var vehicles = _parkingService.GetVehicles();
@@ -38,8 +40,18 @@ namespace CoolParking.WebAPI.Controllers
         [HttpGet]
         public IActionResult GetById([FromQuery] string vehicleId)
         {
-            var vehicles = _parkingService.GetVehicle(vehicleId);
-            return Ok(vehicles);
+            bool isValidId = IsValidVechicleId(vehicleId);
+            if (isValidId)
+            {
+                var vehicle = _parkingService.GetVehicle(vehicleId);
+                if (vehicle != null)
+                {
+                    return Ok(new VehicleSchema(vehicle));
+                }
+                return NotFound();
+            }
+            
+            return BadRequest();
         }
 
         [Route("{id}")]
