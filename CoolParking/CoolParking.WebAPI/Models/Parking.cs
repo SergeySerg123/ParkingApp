@@ -7,7 +7,7 @@ namespace CoolParking.WebAPI.Models
 {
     public class Parking 
     {
-        private static Parking instance = null;
+        //private static Parking instance = null;
         //private ILogService _logService = new LogService(Settings._logFilePath);
 
         public int Capacity { get; private set; }
@@ -17,18 +17,21 @@ namespace CoolParking.WebAPI.Models
 
         public int GetFreePlaces() => Capacity - Busy;
 
-        private Parking() { }
-
-        public static Parking GetInstance()
-        {
-            if (instance == null)
-            {
-                instance = new Parking();
-                instance.Capacity = Settings.Capacity;
-                instance.Busy = 0;
-            }
-            return instance;
+        public Parking() {
+            Capacity = Settings.Capacity;
+            Busy = 0;
         }
+
+        //public static Parking GetInstance()
+        //{
+        //    if (instance == null)
+        //    {
+        //        instance = new Parking();
+        //        instance.Capacity = Settings.Capacity;
+        //        instance.Busy = 0;
+        //    }
+        //    return instance;
+        //}
 
         public void AddVehicle(Vehicle vehicle)
         {
@@ -98,7 +101,7 @@ namespace CoolParking.WebAPI.Models
 
         public void Distruct()
         {
-            instance = null;
+            //instance = null;
         }
 
         public ReadOnlyCollection<Vehicle> GetVehicles
