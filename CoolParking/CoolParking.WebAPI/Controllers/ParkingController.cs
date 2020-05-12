@@ -9,6 +9,8 @@ namespace CoolParking.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class ParkingController : ControllerBase
     {
         private readonly IParkingService _parkingService;
@@ -20,9 +22,7 @@ namespace CoolParking.WebAPI.Controllers
 
 
         [Route("balance")]
-        [HttpGet]       
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet]
         public IActionResult GetBalance()
         {
             decimal balance = _parkingService.GetBalance();
@@ -32,8 +32,6 @@ namespace CoolParking.WebAPI.Controllers
 
         [Route("capacity")]
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetCapacity()
         {
             var capacity = _parkingService.GetCapacity();
@@ -43,8 +41,6 @@ namespace CoolParking.WebAPI.Controllers
 
         [Route("freePlaces")]
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetFreePlaces()
         {
             var freePlaces = _parkingService.GetFreePlaces();
