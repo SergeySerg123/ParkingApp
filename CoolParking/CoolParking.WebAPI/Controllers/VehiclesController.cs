@@ -43,8 +43,17 @@ namespace CoolParking.WebAPI.Controllers
         [HttpDelete]
         public IActionResult Delete([FromQuery] string vehicleId)
         {
-            _parkingService.RemoveVehicle(vehicleId);
-            return Ok();
+            bool isValidId = IsValidVechicleId(vehicleId);
+            if(isValidId)
+            {
+                var deletedVehicle = _parkingService.RemoveVehicle(vehicleId);
+                if(deletedVehicle != null)
+                {
+                    return Ok();
+                }
+                return NotFound();
+            }
+            return BadRequest();
         }
 
         private bool IsValidVechicleId(string vehicleId)
