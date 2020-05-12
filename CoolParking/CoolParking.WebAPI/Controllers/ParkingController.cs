@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoolParking.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,17 +12,20 @@ namespace CoolParking.WebAPI.Controllers
     [ApiController]
     public class ParkingController : ControllerBase
     {
-        public ParkingController()
-        {
+        private readonly IParkingService _parkingService;
 
+        public ParkingController(IParkingService parkingService)
+        {
+            _parkingService = parkingService;
         }
 
 
         [Route("balance")]
         [HttpGet]
-        public string GetBalance()
+        public IActionResult GetBalance()
         {
-            return "Get";
+            decimal balance = _parkingService.GetBalance();
+            return Ok(balance);
         }
 
         [Route("capacity")]
