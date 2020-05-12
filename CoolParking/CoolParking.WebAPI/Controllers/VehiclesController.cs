@@ -1,5 +1,6 @@
 ﻿using CoolParking.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace CoolParking.WebAPI.Controllers
 {
@@ -44,6 +45,12 @@ namespace CoolParking.WebAPI.Controllers
         {
             _parkingService.RemoveVehicle(vehicleId);
             return Ok();
+        }
+
+        private bool IsValidVechicleId(string vehicleId)
+        {
+            Regex regex = new Regex(@"\w{2}-\d{4}-\w{2}", RegexOptions.IgnoreCase);
+            return regex.IsMatch(vehicleId);
         }
     }
 }
