@@ -50,20 +50,21 @@ namespace CoolParking.WebAPI.Models
             Busy += 1;
         }
 
-        public void RemoveVehicle(string vehicleId)
+        public Vehicle RemoveVehicle(string vehicleId)
         {
             Vehicle vehicle = GetVehicle(vehicleId);
             if (vehicle == null)
             {
-                throw new ArgumentException();
+                return vehicle;
             }
 
-            if (vehicle.Balance < 0)
-            {
-                throw new InvalidOperationException();
-            }
+            //if (vehicle.Balance < 0)
+            //{
+            //    throw new InvalidOperationException();
+            //}
 
             Vehicles.Remove(vehicle);
+            return vehicle;
         }
 
         public void TopUpParking(decimal sum)
