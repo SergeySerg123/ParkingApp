@@ -1,11 +1,14 @@
 ﻿using CoolParking.WebAPI.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 using System.Text.RegularExpressions;
 
 namespace CoolParking.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
     public class VehiclesController : ControllerBase
     {
         private readonly IParkingService _parkingService;
@@ -41,6 +44,9 @@ namespace CoolParking.WebAPI.Controllers
 
         [Route("{id}")]
         [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete([FromQuery] string vehicleId)
         {
             bool isValidId = IsValidVechicleId(vehicleId);
@@ -49,7 +55,7 @@ namespace CoolParking.WebAPI.Controllers
                 var deletedVehicle = _parkingService.RemoveVehicle(vehicleId);
                 if(deletedVehicle != null)
                 {
-                    return Ok();
+                    return NoContent();
                 }
                 return NotFound();
             }
