@@ -11,8 +11,26 @@ namespace CoolParking.WebAPI.Controllers
     [ApiController]
     public class ParkingController : ControllerBase
     {
+        public ParkingController()
+        {
+
+        }
+
+
         [Route("balance")]
-        public string Get()
+        public string GetBalance()
+        {
+            return "Get";
+        }
+
+        [Route("capacity")]
+        public string GetCapacity()
+        {
+            return "Get";
+        }
+
+        [Route("freePlaces")]
+        public string GetFreePlaces()
         {
             return "Get";
         }
