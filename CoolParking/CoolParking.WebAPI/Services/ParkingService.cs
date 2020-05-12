@@ -22,9 +22,9 @@ namespace CoolParking.WebAPI.Services
             Parking.AddVehicle(vehicle);
         }
 
-        public void RemoveVehicle(string vehicleId)
+        public Vehicle RemoveVehicle(string vehicleId)
         {
-            Parking.RemoveVehicle(vehicleId);
+            return Parking.RemoveVehicle(vehicleId);
         }
 
         public void TopUpVehicle(string vehicleId, decimal sum)
