@@ -18,18 +18,21 @@ namespace CoolParking.WebAPI.Controllers
 
 
         [Route("balance")]
+        [HttpGet]
         public string GetBalance()
         {
             return "Get";
         }
 
         [Route("capacity")]
+        [HttpGet]
         public string GetCapacity()
         {
             return "Get";
         }
 
         [Route("freePlaces")]
+        [HttpGet]
         public string GetFreePlaces()
         {
             return "Get";
