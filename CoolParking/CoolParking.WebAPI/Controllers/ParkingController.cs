@@ -34,7 +34,7 @@ namespace CoolParking.WebAPI.Controllers
         [HttpGet]
         public IActionResult GetCapacity()
         {
-            var capacity = _parkingService.GetCapacity();
+            int capacity = _parkingService.GetCapacity();
             if (capacity < 0 || capacity > Settings.Capacity) { return BadRequest(); }
             return Ok(capacity);
         }
@@ -43,7 +43,7 @@ namespace CoolParking.WebAPI.Controllers
         [HttpGet]
         public IActionResult GetFreePlaces()
         {
-            var freePlaces = _parkingService.GetFreePlaces();
+            int freePlaces = _parkingService.GetFreePlaces();
             if (freePlaces < 0) { return BadRequest(); }
             return Ok(freePlaces);
         }
