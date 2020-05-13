@@ -10,7 +10,7 @@ namespace CoolParking.WebAPI.Interfaces
         public VehicleType VehicleType { get; private set; }
         public decimal Balance { get; private set; }
 
-        public Vehicle(string id, VehicleType type, decimal b)
+        private Vehicle(string id, VehicleType type, decimal b)
         {
             bool isValid = ValidateVechicle(id, b);
             if(!isValid)
@@ -21,6 +21,9 @@ namespace CoolParking.WebAPI.Interfaces
             VehicleType = type;
             Balance = b;
         }
+
+        public static Vehicle CreateInstance(string id, VehicleType type, decimal b)
+         => new Vehicle(id, type, b);
 
         private bool ValidateVechicle(string vehicleId, decimal d)
         {
