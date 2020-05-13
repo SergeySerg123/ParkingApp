@@ -46,6 +46,9 @@ namespace CoolParking.WebAPI.Controllers
 
         [Route("{id}")]
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetById([FromQuery] string vehicleId)
         {
             bool isValidId = IsValidVechicleId(vehicleId);
