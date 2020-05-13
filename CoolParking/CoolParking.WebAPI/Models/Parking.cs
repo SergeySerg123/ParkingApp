@@ -33,21 +33,22 @@ namespace CoolParking.WebAPI.Models
         //    return instance;
         //}
 
-        public void AddVehicle(Vehicle vehicle)
+        public Vehicle AddVehicle(Vehicle vehicle)
         {
             Vehicle v = GetVehicle(vehicle.Id);
             if (v != null)
             {
-                throw new ArgumentException();
+                return null;
             }
 
-            if (Vehicles.Count >= 10)
-            {
-                throw new InvalidOperationException();
-            }
+            //if (Vehicles.Count >= 10)
+            //{
+            //    throw new InvalidOperationException();
+            //}
 
             Vehicles.Add(vehicle);
             Busy += 1;
+            return vehicle;
         }
 
         public Vehicle RemoveVehicle(string vehicleId)
