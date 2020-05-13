@@ -17,9 +17,9 @@ namespace CoolParking.WebAPI.Services
             _transactionService = transactionService;
         }
 
-        public void AddVehicle(Vehicle vehicle)
+        public Vehicle AddVehicle(Vehicle vehicle)
         {
-            Parking.AddVehicle(vehicle);
+            return Parking.AddVehicle(vehicle);
         }
 
         public Vehicle RemoveVehicle(string vehicleId)
