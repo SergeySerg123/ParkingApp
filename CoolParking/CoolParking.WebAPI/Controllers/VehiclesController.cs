@@ -1,4 +1,5 @@
-﻿using CoolParking.WebAPI.Interfaces;
+﻿using CoolParking.WebAPI.Extensions;
+using CoolParking.WebAPI.Interfaces;
 using CoolParking.WebAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +33,7 @@ namespace CoolParking.WebAPI.Controllers
             [FromBody] decimal balance)
         {
             var type = VehicleTypeHelper.GetVehicleType(vehicleType);
-            _parkingService.AddVehicle(new Vehicle(vehicleId, type, balance));
+            _parkingService.AddVehicle(Vehicle.CreateInstance(vehicleId, type, balance));
             return Ok();
         }
 
@@ -46,7 +47,7 @@ namespace CoolParking.WebAPI.Controllers
                 var vehicle = _parkingService.GetVehicle(vehicleId);
                 if (vehicle != null)
                 {
-                    return Ok(new VehicleSchema(vehicle));
+                    return Ok(vehicle.ToVehicleSchema());
                 }
                 return NotFound();
             }
