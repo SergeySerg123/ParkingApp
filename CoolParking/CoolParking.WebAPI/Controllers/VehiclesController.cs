@@ -29,12 +29,19 @@ namespace CoolParking.WebAPI.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Post([FromBody] string vehicleId, [FromBody] int vehicleType, 
             [FromBody] decimal balance)
         {
             var type = VehicleTypeHelper.GetVehicleType(vehicleType);
-            _parkingService.AddVehicle(Vehicle.CreateInstance(vehicleId, type, balance));
-            return Ok();
+            var vehicle = _parkingService.AddVehicle(
+                Vehicle.CreateInstance(vehicleId, type, balance));
+            if (vehicle != null)
+            {
+                return Created("/api/vehicles/post", vehicle);
+            }
+            return BadRequest();
         }
 
         [Route("{id}")]
