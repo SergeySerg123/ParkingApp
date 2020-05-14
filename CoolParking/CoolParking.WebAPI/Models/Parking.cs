@@ -12,6 +12,7 @@ namespace CoolParking.WebAPI.Models
 
         public int Capacity { get; private set; }
         public decimal Balance { get; private set; }
+        // TODO 
         private readonly List<Vehicle> Vehicles = new List<Vehicle>();
         private int Busy;
 
@@ -22,48 +23,15 @@ namespace CoolParking.WebAPI.Models
             Busy = 0;
         }
 
-        //public static Parking GetInstance()
-        //{
-        //    if (instance == null)
-        //    {
-        //        instance = new Parking();
-        //        instance.Capacity = Settings.Capacity;
-        //        instance.Busy = 0;
-        //    }
-        //    return instance;
-        //}
-
         public Vehicle AddVehicle(Vehicle vehicle)
         {
-            Vehicle v = GetVehicle(vehicle.Id);
-            if (v != null)
-            {
-                return null;
-            }
-
-            //if (Vehicles.Count >= 10)
-            //{
-            //    throw new InvalidOperationException();
-            //}
-
             Vehicles.Add(vehicle);
             Busy += 1;
             return vehicle;
         }
 
-        public Vehicle RemoveVehicle(string vehicleId)
+        public Vehicle RemoveVehicle(Vehicle vehicle)
         {
-            Vehicle vehicle = GetVehicle(vehicleId);
-            if (vehicle == null)
-            {
-                return vehicle;
-            }
-
-            //if (vehicle.Balance < 0)
-            //{
-            //    throw new InvalidOperationException();
-            //}
-
             Vehicles.Remove(vehicle);
             return vehicle;
         }
@@ -109,7 +77,7 @@ namespace CoolParking.WebAPI.Models
         public ReadOnlyCollection<Vehicle> GetVehicles
             => new ReadOnlyCollection<Vehicle>(Vehicles);
 
-        private Vehicle GetVehicle(string vehicleId)
+        public Vehicle GetVehicle(string vehicleId)
         {
             Vehicle vehicle = Vehicles?.Find(v => v.Id == vehicleId);
             return vehicle;
