@@ -2,28 +2,32 @@
 using CoolParking.WebAPI.Models;
 using System;
 using System.Collections.ObjectModel;
+using static CoolParking.WebAPI.Helpers.VehicleValidator;
 
 namespace CoolParking.WebAPI.Services
 {
     public class ParkingService : IParkingService
     {
         private readonly Parking Parking;
-        private readonly ITransactionService _transactionService;
+        private readonly ITransactionsService _transactionService;
 
         public ParkingService(Parking parking,
-            ITransactionService transactionService)
+            ITransactionsService transactionService)
         {
             Parking = parking;
             _transactionService = transactionService;
         }
 
+
+        //TODO: exception when v >= 10
         public Vehicle AddVehicle(Vehicle vehicle)
         {
             Vehicle v = GetVehicle(vehicle.Id);
-            if (v != null || GetVehicles().Count >= 10)
+            if (v != null)
             {
                 return null;
-            }
+            } 
+           
             return Parking.AddVehicle(vehicle);
         }
 
@@ -37,9 +41,19 @@ namespace CoolParking.WebAPI.Services
             return Parking.RemoveVehicle(vehicle);
         }
 
-        public void TopUpVehicle(string vehicleId, decimal sum)
+        public Vehicle TopUpVehicle(string vehicleId, decimal sum)
         {
-            Parking.TopUpVehicle(vehicleId, sum);
+            bool isValidSum = IsValidTopUpSum(sum);
+            if (isValidSum)
+            {
+                Vehicle vehicle = Parking.GetVehicle(vehicleId);
+                if (vehicle != null)
+                {
+                    return vehicle.TopUpVehicle(sum);
+                }
+                return vehicle;
+            }
+            return null;
         }
 
         public decimal GetBalance() => Parking.Balance;
