@@ -4,7 +4,7 @@ using System;
 
 namespace CoolParking.WebAPI.Services
 {
-    public class TransactionService : ITransactionService
+    public class TransactionService : ITransactionsService
     {
         private readonly Transactions transactions = new Transactions();
         //private static TransactionService instance = null;
