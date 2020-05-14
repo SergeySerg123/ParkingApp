@@ -10,7 +10,7 @@ namespace CoolParking.WebAPI.Interfaces
         int GetFreePlaces();
         Vehicle AddVehicle(Vehicle v);
         Vehicle RemoveVehicle(string vehicleId);
-        void TopUpVehicle(string vehicleId, decimal sum);
+        Vehicle TopUpVehicle(string vehicleId, decimal sum);
         ReadOnlyCollection<Vehicle> GetVehicles();
         Vehicle GetVehicle(string vehicleId);
         TransactionInfo[] GetLastParkingTransactions();
