@@ -31,9 +31,10 @@ namespace CoolParking.WebAPI.Interfaces
             return regex.IsMatch(vehicleId) && d >= 0;
         }
 
-        public void TopUpVehicle(decimal sum)
+        public Vehicle TopUpVehicle(decimal sum)
         {
             Balance += sum;
+            return this;
         }
 
         public void Withdraw(decimal sum)
