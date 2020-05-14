@@ -19,12 +19,22 @@ namespace CoolParking.WebAPI.Services
 
         public Vehicle AddVehicle(Vehicle vehicle)
         {
+            Vehicle v = GetVehicle(vehicle.Id);
+            if (v != null || GetVehicles().Count >= 10)
+            {
+                return null;
+            }
             return Parking.AddVehicle(vehicle);
         }
 
         public Vehicle RemoveVehicle(string vehicleId)
         {
-            return Parking.RemoveVehicle(vehicleId);
+            Vehicle vehicle = GetVehicle(vehicleId);
+            if (vehicle == null)
+            {
+                return vehicle;
+            }
+            return Parking.RemoveVehicle(vehicle);
         }
 
         public void TopUpVehicle(string vehicleId, decimal sum)
@@ -40,7 +50,7 @@ namespace CoolParking.WebAPI.Services
 
         public Vehicle GetVehicle(string vehicleId)
         {
-            throw new NotImplementedException();
+            return Parking.GetVehicle(vehicleId);
         }
 
         public ReadOnlyCollection<Vehicle> GetVehicles() => Parking.GetVehicles;
