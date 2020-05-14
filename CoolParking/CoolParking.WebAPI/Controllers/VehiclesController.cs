@@ -3,7 +3,8 @@ using CoolParking.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
-using System.Text.RegularExpressions;
+using static CoolParking.WebAPI.Helpers.VehicleValidator;
+using static CoolParking.WebAPI.Helpers.ExceptionMessageGenerator;
 
 namespace CoolParking.WebAPI.Controllers
 {
@@ -32,7 +33,7 @@ namespace CoolParking.WebAPI.Controllers
         public IActionResult Post(string vehicleId, int vehicleType,
             decimal balance)
         {
-            bool isValidId = IsValidVechicleId(vehicleId);
+            bool isValidId = IsValidVehicleId(vehicleId);
             if(isValidId)
             {
                 var type = VehicleTypeHelper.GetVehicleType(vehicleType);
@@ -43,7 +44,7 @@ namespace CoolParking.WebAPI.Controllers
                     return Created("/api/vehicles/post", vehicle);
                 }
             }          
-            return BadRequest();
+            return BadRequest(GenereteAgrumentExceptionMessage());
         }
 
         [Route("{id}")]
@@ -53,7 +54,7 @@ namespace CoolParking.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetById(string id)
         {
-            bool isValidId = IsValidVechicleId(id);
+            bool isValidId = IsValidVehicleId(id);
             if (isValidId)
             {
                 var vehicle = _parkingService.GetVehicle(id);
@@ -61,10 +62,10 @@ namespace CoolParking.WebAPI.Controllers
                 {
                     return Ok(vehicle.ToVehicleSchema());
                 }
-                return NotFound();
+                return NotFound(GenereteAgrumentNullExceptionMessage());
             }
             
-            return BadRequest();
+            return BadRequest(GenereteAgrumentExceptionMessage());
         }
 
         [Route("{id}")]
@@ -74,7 +75,7 @@ namespace CoolParking.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete(string id)
         {
-            bool isValidId = IsValidVechicleId(id);
+            bool isValidId = IsValidVehicleId(id);
             if(isValidId)
             {
                 var deletedVehicle = _parkingService.RemoveVehicle(id);
@@ -82,15 +83,10 @@ namespace CoolParking.WebAPI.Controllers
                 {
                     return NoContent();
                 }
-                return NotFound();
+                return NotFound(GenereteAgrumentNullExceptionMessage());
             }
-            return BadRequest();
+            return BadRequest(GenereteAgrumentExceptionMessage());
         }
 
-        private bool IsValidVechicleId(string vehicleId)
-        {
-            Regex regex = new Regex(@"\w{2}-\d{4}-\w{2}", RegexOptions.IgnoreCase);
-            return regex.IsMatch(vehicleId);
-        }
     }
 }
