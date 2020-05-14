@@ -1,6 +1,5 @@
 ﻿using CoolParking.WebAPI.Extensions;
 using CoolParking.WebAPI.Interfaces;
-using CoolParking.WebAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
@@ -9,7 +8,6 @@ using System.Text.RegularExpressions;
 namespace CoolParking.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     public class VehiclesController : ControllerBase
     {
@@ -31,16 +29,20 @@ namespace CoolParking.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Post([FromBody] string vehicleId, [FromBody] int vehicleType, 
-            [FromBody] decimal balance)
+        public IActionResult Post(string vehicleId, int vehicleType,
+            decimal balance)
         {
-            var type = VehicleTypeHelper.GetVehicleType(vehicleType);
-            var vehicle = _parkingService.AddVehicle(
-                Vehicle.CreateInstance(vehicleId, type, balance));
-            if (vehicle != null)
+            bool isValidId = IsValidVechicleId(vehicleId);
+            if(isValidId)
             {
-                return Created("/api/vehicles/post", vehicle);
-            }
+                var type = VehicleTypeHelper.GetVehicleType(vehicleType);
+                var vehicle = _parkingService.AddVehicle(
+                    Vehicle.CreateInstance(vehicleId, type, balance));
+                if (vehicle != null)
+                {
+                    return Created("/api/vehicles/post", vehicle);
+                }
+            }          
             return BadRequest();
         }
 
@@ -49,12 +51,12 @@ namespace CoolParking.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetById([FromQuery] string vehicleId)
+        public IActionResult GetById(string id)
         {
-            bool isValidId = IsValidVechicleId(vehicleId);
+            bool isValidId = IsValidVechicleId(id);
             if (isValidId)
             {
-                var vehicle = _parkingService.GetVehicle(vehicleId);
+                var vehicle = _parkingService.GetVehicle(id);
                 if (vehicle != null)
                 {
                     return Ok(vehicle.ToVehicleSchema());
@@ -70,12 +72,12 @@ namespace CoolParking.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Delete([FromQuery] string vehicleId)
+        public IActionResult Delete(string id)
         {
-            bool isValidId = IsValidVechicleId(vehicleId);
+            bool isValidId = IsValidVechicleId(id);
             if(isValidId)
             {
-                var deletedVehicle = _parkingService.RemoveVehicle(vehicleId);
+                var deletedVehicle = _parkingService.RemoveVehicle(id);
                 if(deletedVehicle != null)
                 {
                     return NoContent();
