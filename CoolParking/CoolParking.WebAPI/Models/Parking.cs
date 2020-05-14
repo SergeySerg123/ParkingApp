@@ -54,16 +54,6 @@ namespace CoolParking.WebAPI.Models
             return total * (decimal)Settings.PenaltyRatio;
         }
 
-        public void TopUpVehicle(string vehicleId, decimal sum)
-        {
-            Vehicle vehicle = GetVehicle(vehicleId);
-            if (vehicle == null || sum < 0)
-            {
-                throw new ArgumentException();
-            }
-            vehicle.TopUpVehicle(sum);
-        }
-
         public void WriteToLog(string mess)
         {
             //_logService.Write(mess);
