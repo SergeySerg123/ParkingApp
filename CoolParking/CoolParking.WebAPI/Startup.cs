@@ -28,7 +28,7 @@ namespace CoolParking.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IParkingService, ParkingService>();
-            services.AddTransient<ITransactionService, TransactionService>();
+            services.AddTransient<ITransactionsService, TransactionService>();
             services.AddSingleton<Parking>();
             services.AddControllers();
         }
