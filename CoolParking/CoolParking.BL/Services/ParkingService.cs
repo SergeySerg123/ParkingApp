@@ -9,7 +9,7 @@ using CoolParking.BL.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Net.Http;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace CoolParking.BL.Services
 {
@@ -48,7 +48,12 @@ namespace CoolParking.BL.Services
         }
 
        
-        public ReadOnlyCollection<Vehicle> GetVehicles() => Parking.GetVehicles;
+        public ReadOnlyCollection<Vehicle> GetVehicles()
+        {
+            var response = httpClient.GetStringAsync(Settings.BASE_URL_VEHICLES_API);
+            string vehicles =  response.Result;
+            return JsonSerializer.Deserialize<ReadOnlyCollection<Vehicle>>(vehicles);
+        }
 
         public decimal GetBalance() 
         {
