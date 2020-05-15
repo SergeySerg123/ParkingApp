@@ -1,6 +1,5 @@
 ﻿using CoolParking.WebAPI.Interfaces;
 using CoolParking.WebAPI.Models;
-using System;
 using System.Collections.ObjectModel;
 using static CoolParking.WebAPI.Helpers.VehicleValidator;
 
