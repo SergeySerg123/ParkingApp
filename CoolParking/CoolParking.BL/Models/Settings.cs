@@ -35,5 +35,7 @@ namespace CoolParking.BL.Models
                     return 0;
             }
         }
+
+        public const string BASE_URL_PARKING_API = "http://localhost:51183/api/parking/";
     }
 }
