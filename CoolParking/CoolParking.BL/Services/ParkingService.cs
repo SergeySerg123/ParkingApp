@@ -8,6 +8,8 @@ using CoolParking.BL.Interfaces;
 using CoolParking.BL.Models;
 using System;
 using System.Collections.ObjectModel;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace CoolParking.BL.Services
 {
@@ -18,6 +20,7 @@ namespace CoolParking.BL.Services
         private readonly ITransactionService _transactionService;
         private readonly ITimerService _withdrawTimer;
         private readonly ITimerService _logTimer;
+        private readonly HttpClient httpClient = new HttpClient();
         bool disposed = false;
 
         public ParkingService(ITimerService withdrawTimer, ITimerService logTimer, ILogService logService)
@@ -47,11 +50,26 @@ namespace CoolParking.BL.Services
        
         public ReadOnlyCollection<Vehicle> GetVehicles() => Parking.GetVehicles;
 
-        public decimal GetBalance() => Parking.Balance;
+        public decimal GetBalance() 
+        {
+            var response = httpClient.GetStringAsync(Settings.BASE_URL_PARKING_API + "balance");
+            string balance = response.Result;
+            return decimal.Parse(balance);
+        } 
 
-        public int GetCapacity() => Parking.Capacity;
+        public int GetCapacity()
+        {
+            var response = httpClient.GetStringAsync(Settings.BASE_URL_PARKING_API + "capacity");
+            string capacity = response.Result;
+            return int.Parse(capacity);
+        }
 
-        public int GetFreePlaces() => Parking.GetFreePlaces();
+        public int GetFreePlaces()
+        {
+            var response = httpClient.GetStringAsync(Settings.BASE_URL_PARKING_API + "freePlaces");
+            string freePlaces = response.Result;
+            return int.Parse(freePlaces);
+        }
 
         public void Dispose()
         {
