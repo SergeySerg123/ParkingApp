@@ -6,10 +6,12 @@
 //       and tests, for example, in ParkingServiceTests you can find the necessary constructor format and validation rules.
 using CoolParking.BL.Interfaces;
 using CoolParking.BL.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 using System.Net.Http;
-using System.Text.Json;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace CoolParking.BL.Services
 {
@@ -32,9 +34,21 @@ namespace CoolParking.BL.Services
             _logTimer = logTimer;
         }
 
+        // Test of addVehicle TODO Console
         public void AddVehicle(Vehicle vehicle)
         {
-            Parking.AddVehicle(vehicle);
+            var request = new HttpRequestMessage();
+            HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(vehicle), Encoding.UTF8);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            request.RequestUri = new Uri(Settings.BASE_URL_VEHICLES_API);
+            var response =  httpClient.PostAsync(Settings.BASE_URL_VEHICLES_API, httpContent);
+            var vehicleAsJson =  response.Result.Content.ReadAsStringAsync();
+            var v = JsonConvert.DeserializeObject<Vehicle>(vehicleAsJson.Result);
+           
+            if (v!= null)
+            {
+
+            }
         }
 
         public void RemoveVehicle(string vehicleId)
@@ -52,7 +66,7 @@ namespace CoolParking.BL.Services
         {
             var response = httpClient.GetStringAsync(Settings.BASE_URL_VEHICLES_API);
             string vehicles =  response.Result;
-            return JsonSerializer.Deserialize<ReadOnlyCollection<Vehicle>>(vehicles);
+            return JsonConvert.DeserializeObject<ReadOnlyCollection<Vehicle>>(vehicles);
         }
 
         public decimal GetBalance() 
