@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace CoolParking.WebAPI.Helpers
 {
@@ -6,8 +7,15 @@ namespace CoolParking.WebAPI.Helpers
     {
         public static bool IsValidVehicleId(string vehicleId)
         {
-            Regex regex = new Regex(@"\w{2}-\d{4}-\w{2}", RegexOptions.IgnoreCase);
-            return regex.IsMatch(vehicleId);
+            try
+            {
+                Regex regex = new Regex(@"\w{2}-\d{4}-\w{2}", RegexOptions.IgnoreCase);
+                return regex.IsMatch(vehicleId);
+            } catch (Exception e)
+            {
+                return false;
+            }
+            
         }
 
         public static bool IsValidTopUpSum(decimal sum) => sum > 0;

@@ -5,10 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using static CoolParking.WebAPI.Helpers.VehicleValidator;
 using static CoolParking.WebAPI.Helpers.ExceptionMessageGenerator;
+using CoolParking.WebAPI.Models;
+using System.Collections.Generic;
 
 namespace CoolParking.WebAPI.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     public class VehiclesController : ControllerBase
     {
@@ -30,15 +33,14 @@ namespace CoolParking.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Post(string vehicleId, int vehicleType,
-            decimal balance)
+        public IActionResult Post([FromBody]VehicleSchema sh)
         {
-            bool isValidId = IsValidVehicleId(vehicleId);
+            bool isValidId = IsValidVehicleId(sh.id);
             if(isValidId)
             {
-                var type = VehicleTypeHelper.GetVehicleType(vehicleType);
+                var type = VehicleTypeHelper.GetVehicleType(sh.vehicleType);
                 var vehicle = _parkingService.AddVehicle(
-                    Vehicle.CreateInstance(vehicleId, type, balance));
+                    Vehicle.CreateInstance(sh.id, type, sh.balance));
                 if (vehicle != null)
                 {
                     return Created("/api/vehicles/post", vehicle);

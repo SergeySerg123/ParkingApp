@@ -36,6 +36,7 @@ namespace CoolParking.BL.Models
             }
         }
 
+        public const string BASE_URL= "http://localhost:51183/";
         public const string BASE_URL_PARKING_API = "http://localhost:51183/api/parking/";
         public const string BASE_URL_VEHICLES_API = "http://localhost:51183/api/vehicles/";
     }

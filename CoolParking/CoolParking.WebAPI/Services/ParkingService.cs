@@ -45,7 +45,7 @@ namespace CoolParking.WebAPI.Services
             bool isValidSum = IsValidTopUpSum(sum);
             if (isValidSum)
             {
-                Vehicle vehicle = Parking.GetVehicle(vehicleId);
+                Vehicle vehicle = this.GetVehicle(vehicleId);
                 if (vehicle != null)
                 {
                     return vehicle.TopUpVehicle(sum);
