@@ -10,8 +10,8 @@ namespace CoolParking.BL.Interfaces
         int GetCapacity();
         int GetFreePlaces();
         ReadOnlyCollection<Vehicle> GetVehicles();
-        void AddVehicle(Vehicle vehicle);
-        void RemoveVehicle(string vehicleId);
+        bool AddVehicle(Vehicle vehicle);
+        bool RemoveVehicle(string vehicleId);
         void TopUpVehicle(string vehicleId, decimal sum);
         TransactionInfo[] GetLastParkingTransactions();
         string ReadFromLog();
