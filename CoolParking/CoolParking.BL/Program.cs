@@ -64,8 +64,9 @@ namespace CoolParking.BL
 
                 case 3:
                     Vehicle v = dg.GenerateVehicle();
-                    _parkingService.AddVehicle(v);
-                    Console.WriteLine($"Added Vechicle '{v.VehicleType}' with Balance {v.Balance}");
+                    bool succeed = _parkingService.AddVehicle(v);
+                    if (succeed)
+                        Console.WriteLine($"Added Vechicle '{v.VehicleType}' with Balance {v.Balance}");
                     break;
 
                 case 4:

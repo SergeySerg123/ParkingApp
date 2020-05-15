@@ -6,19 +6,12 @@ namespace CoolParking.WebAPI.Services
 {
     public class TransactionService : ITransactionsService
     {
-        private readonly Transactions transactions = new Transactions();
-        //private static TransactionService instance = null;
+        private readonly Transactions transactions; 
 
-        public TransactionService() { }
-
-        //public static TransactionService GetInstance()
-        //{
-        //    if (instance == null)
-        //    {
-        //        instance = new TransactionService();
-        //    }
-        //    return instance;
-        //}
+        public TransactionService(Transactions transactions) 
+        {
+            this.transactions = transactions;
+        }
 
         public void CreateTransaction(Parking p, Vehicle vehicle)
         {
