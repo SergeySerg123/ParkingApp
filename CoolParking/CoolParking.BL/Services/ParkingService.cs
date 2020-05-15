@@ -35,7 +35,7 @@ namespace CoolParking.BL.Services
         }
 
         // Test of addVehicle TODO Console
-        public void AddVehicle(Vehicle vehicle)
+        public bool AddVehicle(Vehicle vehicle)
         {
             var request = new HttpRequestMessage();
             HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(vehicle), Encoding.UTF8);
@@ -44,16 +44,13 @@ namespace CoolParking.BL.Services
             var response =  httpClient.PostAsync(Settings.BASE_URL_VEHICLES_API, httpContent);
             var vehicleAsJson =  response.Result.Content.ReadAsStringAsync();
             var v = JsonConvert.DeserializeObject<Vehicle>(vehicleAsJson.Result);
-           
-            if (v!= null)
-            {
-
-            }
+            return (v != null);
         }
 
-        public void RemoveVehicle(string vehicleId)
+        public bool RemoveVehicle(string vehicleId)
         {
             Parking.RemoveVehicle(vehicleId);
+            return true;
         }
 
         public void TopUpVehicle(string vehicleId, decimal sum)
