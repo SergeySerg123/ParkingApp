@@ -6,8 +6,12 @@
 //       and tests, for example, in ParkingServiceTests you can find the necessary constructor format and validation rules.
 using CoolParking.BL.Interfaces;
 using CoolParking.BL.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace CoolParking.BL.Services
 {
@@ -18,6 +22,7 @@ namespace CoolParking.BL.Services
         private readonly ITransactionService _transactionService;
         private readonly ITimerService _withdrawTimer;
         private readonly ITimerService _logTimer;
+        private readonly HttpClient httpClient = new HttpClient();
         bool disposed = false;
 
         public ParkingService(ITimerService withdrawTimer, ITimerService logTimer, ILogService logService)
@@ -29,14 +34,23 @@ namespace CoolParking.BL.Services
             _logTimer = logTimer;
         }
 
-        public void AddVehicle(Vehicle vehicle)
+        // Test of addVehicle TODO Console
+        public bool AddVehicle(Vehicle vehicle)
         {
-            Parking.AddVehicle(vehicle);
+            var request = new HttpRequestMessage();
+            HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(vehicle), Encoding.UTF8);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            request.RequestUri = new Uri(Settings.BASE_URL_VEHICLES_API);
+            var response =  httpClient.PostAsync(Settings.BASE_URL_VEHICLES_API, httpContent);
+            var vehicleAsJson =  response.Result.Content.ReadAsStringAsync();
+            var v = JsonConvert.DeserializeObject<Vehicle>(vehicleAsJson.Result);
+            return (v != null);
         }
 
-        public void RemoveVehicle(string vehicleId)
+        public bool RemoveVehicle(string vehicleId)
         {
             Parking.RemoveVehicle(vehicleId);
+            return true;
         }
 
         public void TopUpVehicle(string vehicleId, decimal sum)
@@ -45,13 +59,33 @@ namespace CoolParking.BL.Services
         }
 
        
-        public ReadOnlyCollection<Vehicle> GetVehicles() => Parking.GetVehicles;
+        public ReadOnlyCollection<Vehicle> GetVehicles()
+        {
+            var response = httpClient.GetStringAsync(Settings.BASE_URL_VEHICLES_API);
+            string vehicles =  response.Result;
+            return JsonConvert.DeserializeObject<ReadOnlyCollection<Vehicle>>(vehicles);
+        }
 
-        public decimal GetBalance() => Parking.Balance;
+        public decimal GetBalance() 
+        {
+            var response = httpClient.GetStringAsync(Settings.BASE_URL_PARKING_API + "balance");
+            string balance = response.Result;
+            return decimal.Parse(balance);
+        } 
 
-        public int GetCapacity() => Parking.Capacity;
+        public int GetCapacity()
+        {
+            var response = httpClient.GetStringAsync(Settings.BASE_URL_PARKING_API + "capacity");
+            string capacity = response.Result;
+            return int.Parse(capacity);
+        }
 
-        public int GetFreePlaces() => Parking.GetFreePlaces();
+        public int GetFreePlaces()
+        {
+            var response = httpClient.GetStringAsync(Settings.BASE_URL_PARKING_API + "freePlaces");
+            string freePlaces = response.Result;
+            return int.Parse(freePlaces);
+        }
 
         public void Dispose()
         {
