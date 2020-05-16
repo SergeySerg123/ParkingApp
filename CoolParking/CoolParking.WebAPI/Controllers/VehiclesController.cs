@@ -36,7 +36,8 @@ namespace CoolParking.WebAPI.Controllers
         public IActionResult Post([FromBody]VehicleSchema sh)
         {
             bool isValidId = IsValidVehicleId(sh.id);
-            if(isValidId)
+            bool isValidType = IsExistingVehicleType(sh.vehicleType);
+            if(isValidId && isValidType)
             {
                 var type = VehicleTypeHelper.GetVehicleType(sh.vehicleType);
                 var vehicle = _parkingService.AddVehicle(
