@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
+using CoolParking.BL;
 using CoolParking.WebAPI.Interfaces;
 using CoolParking.WebAPI.Models;
 using CoolParking.WebAPI.Services;
@@ -25,7 +26,9 @@ namespace CoolParking.WebAPI
 
         public Startup(IConfiguration configuration)
         {
+            
             Configuration = configuration;
+            // WHY IS'N IT WORK FOR ME?
             //InitConsoleApp();
         }
 
