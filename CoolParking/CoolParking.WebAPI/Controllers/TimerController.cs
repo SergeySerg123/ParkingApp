@@ -20,6 +20,7 @@ namespace CoolParking.WebAPI.Controllers
         }
 
         [HttpPost]
+        [HttpGet]
         [Route("start")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult StartWithdraw()
@@ -29,7 +30,7 @@ namespace CoolParking.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("stop")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult StopWithdraw()
