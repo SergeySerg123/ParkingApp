@@ -10,6 +10,7 @@ using CoolParking.BL.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Net.Http;
 
 
@@ -73,16 +74,18 @@ namespace CoolParking.BL.Services
             }                
         }
 
-        public decimal GetBalance() 
+        public decimal GetBalance()
         {
             using (var client = new HttpClient())
             {
                 var response = client.GetStringAsync(Settings.BASE_URL_PARKING_API + "balance");
                 string balance = response.Result;
-                return decimal.Parse(balance);
+                var b = decimal.Parse(balance, CultureInfo.InvariantCulture);
+                return Math.Round(b, 2);
+
             }
-                
-        } 
+        }
+
 
         public int GetCapacity()
         {
@@ -91,8 +94,7 @@ namespace CoolParking.BL.Services
                 var response = client.GetStringAsync(Settings.BASE_URL_PARKING_API + "capacity");
                 string capacity = response.Result;
                 return int.Parse(capacity);
-            }
-                
+            }               
         }
 
         public int GetFreePlaces()
