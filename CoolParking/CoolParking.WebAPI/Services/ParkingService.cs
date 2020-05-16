@@ -41,17 +41,12 @@ namespace CoolParking.WebAPI.Services
 
         public Vehicle TopUpVehicle(string vehicleId, decimal sum)
         {
-            bool isValidSum = IsValidTopUpSum(sum);
-            if (isValidSum)
+            Vehicle vehicle = this.GetVehicle(vehicleId);
+            if (vehicle != null)
             {
-                Vehicle vehicle = this.GetVehicle(vehicleId);
-                if (vehicle != null)
-                {
-                    return vehicle.TopUpVehicle(sum);
-                }
-                return vehicle;
+                return vehicle.TopUpVehicle(sum);
             }
-            return null;
+            return vehicle;
         }
 
         public decimal GetBalance() => Parking.Balance;
