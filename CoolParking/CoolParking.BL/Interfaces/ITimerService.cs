@@ -6,8 +6,8 @@ namespace CoolParking.BL.Interfaces
     {
         event ElapsedEventHandler Elapsed;
         double Interval { get; set; }
-        void Start();
-        void Stop();
+        bool Start();
+        bool Stop();
         void Dispose();
     }
 }
