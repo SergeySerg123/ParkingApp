@@ -37,7 +37,7 @@ namespace CoolParking.WebAPI
             services.AddSingleton<Parking>();
             services.AddSingleton<Transactions>();
             //services.AddTransient<Timer>();
-            services.AddTransient<ITimerService, TimerService>();
+            services.AddSingleton<ITimerService, TimerService>();
             services.AddTransient<IParkingService, ParkingService>();
             services.AddTransient<ITransactionsService, TransactionService>();
             services.AddControllers();
