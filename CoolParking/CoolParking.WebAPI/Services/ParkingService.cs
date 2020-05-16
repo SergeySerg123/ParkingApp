@@ -17,12 +17,11 @@ namespace CoolParking.WebAPI.Services
             _transactionService = transactionService;
         }
 
-
-        //TODO: exception when v >= 10
         public Vehicle AddVehicle(Vehicle vehicle)
         {
             Vehicle v = GetVehicle(vehicle.Id);
-            if (v != null)
+            int freePlace = Parking.GetFreePlaces();
+            if (v != null || freePlace == 0)
             {
                 return null;
             } 
