@@ -1,26 +1,27 @@
 ﻿// TODO: implement class TimerService from the ITimerService interface.
 //       Service have to be just wrapper on System Timers.
 
-using CoolParking.BL.Interfaces;
-using CoolParking.BL.Models;
+using CoolParking.WebAPI.Interfaces;
+using CoolParking.WebAPI.Models;
 using System;
-using System.Net.Http;
 using System.Timers;
 
-namespace CoolParking.BL.Services
+namespace CoolParking.WebAPI.Services
 {
     public class TimerService : ITimerService
     {
-        private ITransactionService _transactionService = TransactionService.CreateInstance();
-        private Timer timer;
+        private readonly ITransactionsService _transactionService;
+        private readonly Timer timer;
+        private readonly Parking parking;
 
         public double Interval { get; set; }
-        public TimerService()
+        public TimerService(ITransactionsService transactionsService, Parking parking)
         {
-            Elapsed += OnTimedEvent;
-            timer = new Timer();
-            timer.Elapsed += Callback;
-            
+            _transactionService = transactionsService;
+            this.timer = new Timer();
+            this.parking = parking;
+            Elapsed += OnTimedEvent;           
+            timer.Elapsed += Callback;          
             timer.AutoReset = true;
         }
 
@@ -29,11 +30,9 @@ namespace CoolParking.BL.Services
 
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            var parking = Parking.GetInstance();
             var vehicles = parking.GetVehicles;
             foreach(Vehicle v in vehicles)
-            {
-              
+            {            
                 _transactionService.CreateTransaction(parking, v);
             }
         }
@@ -50,10 +49,8 @@ namespace CoolParking.BL.Services
 
         public void Start()
         {
-            using (var client = new HttpClient())
-            {
-
-            }
+            timer.Interval = Interval;
+            timer.Enabled = true;
         }
 
         public void Stop()

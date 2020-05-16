@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Timers;
 using CoolParking.WebAPI.Interfaces;
 using CoolParking.WebAPI.Models;
 using CoolParking.WebAPI.Services;
@@ -35,6 +36,8 @@ namespace CoolParking.WebAPI
         {
             services.AddSingleton<Parking>();
             services.AddSingleton<Transactions>();
+            //services.AddTransient<Timer>();
+            services.AddTransient<ITimerService, TimerService>();
             services.AddTransient<IParkingService, ParkingService>();
             services.AddTransient<ITransactionsService, TransactionService>();
             services.AddControllers();

@@ -1,9 +1,9 @@
-﻿using CoolParking.WebAPI.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using CoolParking.WebAPI.Interfaces;
+using CoolParking.WebAPI.Models;
 using static CoolParking.WebAPI.Helpers.VehicleValidator;
 using static CoolParking.WebAPI.Helpers.ExceptionMessageGenerator;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using CoolParking.WebAPI.Models;
 
 namespace CoolParking.WebAPI.Controllers
 {
@@ -19,6 +19,7 @@ namespace CoolParking.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetAllTransactions()
         {
@@ -27,6 +28,7 @@ namespace CoolParking.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("last")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetLastTransactions()
         {

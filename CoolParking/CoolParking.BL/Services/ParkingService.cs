@@ -25,7 +25,7 @@ namespace CoolParking.BL.Services
         public ParkingService(ITimerService withdrawTimer, ITimerService logTimer, ILogService logService)
         {
             _logService = logService;
-            _transactionService = TransactionService.GetInstance();
+            _transactionService = TransactionService.CreateInstance();
             _withdrawTimer = withdrawTimer;
             _logTimer = logTimer;
         }
