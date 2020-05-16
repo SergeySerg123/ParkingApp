@@ -109,7 +109,12 @@ namespace CoolParking.BL.Services
 
         public TransactionInfo[] GetLastParkingTransactions()
         {
-            return _transactionService.GetLastParkingTransactions();
+            using (var client = new HttpClient())
+            {
+                var response = client.GetStringAsync(Settings.BASE_URL_TRANSACTIONS_API + "last");
+                var vehicles = response.Result;
+                return JsonConvert.DeserializeObject<TransactionInfo[]>(vehicles);
+            }
         }
 
         public string ReadFromLog()
