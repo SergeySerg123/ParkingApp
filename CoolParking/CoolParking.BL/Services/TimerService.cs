@@ -4,13 +4,14 @@
 using CoolParking.BL.Interfaces;
 using CoolParking.BL.Models;
 using System;
+using System.Net.Http;
 using System.Timers;
 
 namespace CoolParking.BL.Services
 {
     public class TimerService : ITimerService
     {
-        private ITransactionService _transactionService = TransactionService.GetInstance();
+        private ITransactionService _transactionService = TransactionService.CreateInstance();
         private Timer timer;
 
         public double Interval { get; set; }
@@ -47,15 +48,24 @@ namespace CoolParking.BL.Services
             GC.SuppressFinalize(this);
         }
 
-        public void Start()
+        public bool Start()
         {
-            timer.Interval = Interval;
-            timer.Enabled = true;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Settings.BASE_URL);
+                var res = client.GetAsync("api/timer/start").Result;
+                return res.IsSuccessStatusCode;
+            }
         }
 
-        public void Stop()
+        public bool Stop()
         {
-            timer.Enabled = false;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Settings.BASE_URL);
+                var res = client.GetAsync("api/timer/stop").Result;
+                return res.IsSuccessStatusCode;
+            }
         }
 
         private void Callback(Object source, ElapsedEventArgs e)

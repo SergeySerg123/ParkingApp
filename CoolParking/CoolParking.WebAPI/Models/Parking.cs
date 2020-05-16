@@ -7,21 +7,14 @@ namespace CoolParking.WebAPI.Models
 {
     public class Parking 
     {
-        //private static Parking instance = null;
         //private ILogService _logService = new LogService(Settings._logFilePath);
 
-        public int Capacity { get; private set; }
+        public int Capacity { get; private set; } = Settings.Capacity;
         public decimal Balance { get; private set; }
-        // TODO 
         private readonly List<Vehicle> Vehicles = new List<Vehicle>();
-        private int Busy;
+        private int Busy = 0;
 
         public int GetFreePlaces() => Capacity - Busy;
-
-        public Parking() {
-            Capacity = Settings.Capacity;
-            Busy = 0;
-        }
 
         public Vehicle AddVehicle(Vehicle vehicle)
         {
@@ -40,20 +33,7 @@ namespace CoolParking.WebAPI.Models
         {
             Balance += sum;
         }
-        public decimal WithdrawFromVechicle(Vehicle v, decimal sum) 
-        {
-            var balance = v.Balance;
-            decimal actualSum = ((balance - sum) < 0) ? sum * ApplyPenalty(balance, sum) : sum;
-            v.Withdraw(actualSum);
-            return actualSum;
-        }
-
-        private decimal ApplyPenalty(decimal balance, decimal sum)
-        {
-            decimal total = balance - sum;
-            return total * (decimal)Settings.PenaltyRatio;
-        }
-
+        
         public void WriteToLog(string mess)
         {
             //_logService.Write(mess);

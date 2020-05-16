@@ -56,10 +56,19 @@ namespace CoolParking.BL
                     break;
 
                 case 2:
-                    _withdrawTimer.Stop();
-                    Console.WriteLine("=====================");
-                    Console.WriteLine("Parking stoped!");
-                    Console.WriteLine("=====================");
+                    bool stoped =_withdrawTimer.Stop();
+                    if (stoped)
+                    {
+                        Console.WriteLine("=====================");
+                        Console.WriteLine("Parking stoped!");
+                        Console.WriteLine("=====================");
+                    } else
+                    {
+                        Console.WriteLine("=====================");
+                        Console.WriteLine("Parking stoped ERROR!");
+                        Console.WriteLine("=====================");
+                    }
+                    
                     break;
 
                 case 3:
@@ -67,6 +76,8 @@ namespace CoolParking.BL
                     bool succeed = _parkingService.AddVehicle(v);
                     if (succeed)
                         Console.WriteLine($"Added Vechicle '{v.VehicleType}' with Balance {v.Balance}");
+                    else
+                        Console.WriteLine("Full parking");
                     break;
 
                 case 4:
@@ -81,7 +92,7 @@ namespace CoolParking.BL
                     Console.WriteLine($"Cars in the parking:");
                     foreach (var vechicle in vechicles)
                     {
-                        Console.WriteLine($"- id: {vechicle.Id}, type: {vechicle.VehicleType}, balance: {vechicle.Balance}");
+                        Console.WriteLine($"- id: {vechicle.id}, type: {vechicle.vehicleType}, balance: {vechicle.balance}");
                     }
                     break;
 
@@ -91,13 +102,13 @@ namespace CoolParking.BL
                     {
                         while(openedSubMenu)
                         {
-                            IDictionary<int, Vehicle> dictionary = new Dictionary<int, Vehicle>();
+                            IDictionary<int, VehicleSchema> dictionary = new Dictionary<int, VehicleSchema>();
                             Console.WriteLine($"Select vechicle for top up balance from list:");
                             int i = 0;
                             foreach (var vechicle in vechicles)
                             {
                                 ++i;
-                                Console.WriteLine($"{i} - id: {vechicle.Id}, type: {vechicle.VehicleType}, balance: {vechicle.Balance}");
+                                Console.WriteLine($"{i} - id: {vechicle.id}, type: {vechicle.vehicleType}, balance: {vechicle.balance}");
                                 dictionary.Add(i, vechicle);
                             }
 
@@ -107,8 +118,10 @@ namespace CoolParking.BL
                                 num = Convert.ToInt32(Console.ReadLine());
                                 Console.WriteLine("Top Up balance on: ");
                                 int sum = Convert.ToInt32(Console.ReadLine());
-                                Console.WriteLine($"Balance vehicle with id {dictionary[num].Id} top uped on {sum}. Thank you!");
-                                _parkingService.TopUpVehicle(dictionary[num].Id, sum);
+                                bool res = _parkingService.TopUpVehicle(dictionary[num].id, sum);
+                                if (res)
+                                    Console.WriteLine($"Balance vehicle with id {dictionary[num].id} top uped on {sum}. Thank you!");
+
                                 openedSubMenu = false;
                             }
                             catch (Exception e)

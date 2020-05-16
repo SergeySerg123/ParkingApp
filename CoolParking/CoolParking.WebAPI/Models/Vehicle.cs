@@ -12,11 +12,6 @@ namespace CoolParking.WebAPI.Interfaces
 
         private Vehicle(string id, VehicleType type, decimal b)
         {
-            bool isValid = ValidateVechicle(id, b);
-            if(!isValid)
-            {
-                throw new ArgumentException();
-            }
             Id = id;
             VehicleType = type;
             Balance = b;
@@ -24,12 +19,6 @@ namespace CoolParking.WebAPI.Interfaces
 
         public static Vehicle CreateInstance(string id, VehicleType type, decimal b)
          => new Vehicle(id, type, b);
-
-        private bool ValidateVechicle(string vehicleId, decimal d)
-        {
-            Regex regex = new Regex(@"\w{2}-\d{4}-\w{2}", RegexOptions.IgnoreCase);
-            return regex.IsMatch(vehicleId) && d >= 0;
-        }
 
         public Vehicle TopUpVehicle(decimal sum)
         {

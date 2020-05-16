@@ -1,7 +1,7 @@
-﻿using CoolParking.WebAPI.Interfaces;
-using CoolParking.WebAPI.Models;
+﻿using CoolParking.BL;
+using CoolParking.BL.Models;
 
-namespace CoolParking.WebAPI.Extensions
+namespace CoolParking.BL.Extensions
 {
     public static class VehicleExtensions
     {

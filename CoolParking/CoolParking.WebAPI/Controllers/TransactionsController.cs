@@ -1,15 +1,14 @@
-﻿using CoolParking.WebAPI.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using CoolParking.WebAPI.Interfaces;
+using CoolParking.WebAPI.Models;
 using static CoolParking.WebAPI.Helpers.VehicleValidator;
 using static CoolParking.WebAPI.Helpers.ExceptionMessageGenerator;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Net.Mime;
 
 namespace CoolParking.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Produces(MediaTypeNames.Application.Json)]
     public class TransactionsController : ControllerBase
     {
         private readonly IParkingService _parkingService;
@@ -20,6 +19,7 @@ namespace CoolParking.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetAllTransactions()
         {
@@ -28,6 +28,7 @@ namespace CoolParking.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("last")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetLastTransactions()
         {
@@ -37,15 +38,16 @@ namespace CoolParking.WebAPI.Controllers
         }
 
         [HttpPut]
+        [Route("topupvehicle")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult TopUpVehicle(string id, decimal sum)
+        public IActionResult TopUpVehicle([FromBody]TopUpSchema topUp)
         {
-            bool isValidId = IsValidVehicleId(id);
+            bool isValidId = IsValidVehicleId(topUp.id);
             if(isValidId)
             {
-                var vehicle = _parkingService.TopUpVehicle(id, sum);
+                var vehicle = _parkingService.TopUpVehicle(topUp.id, topUp.sum);
                 if (vehicle != null)
                 {
                     return Ok();

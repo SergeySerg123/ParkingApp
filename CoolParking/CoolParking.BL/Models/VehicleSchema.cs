@@ -1,7 +1,4 @@
-﻿using CoolParking.WebAPI.Interfaces;
-using Newtonsoft.Json;
-
-namespace CoolParking.WebAPI.Models
+﻿namespace CoolParking.BL
 {
     public class VehicleSchema
     {

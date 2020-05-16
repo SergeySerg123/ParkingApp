@@ -4,15 +4,15 @@ using CoolParking.BL.Models;
 
 namespace CoolParking.BL.Interfaces
 {
-    public interface IParkingService : IDisposable
+    public interface IParkingService
     {
         decimal GetBalance();
         int GetCapacity();
         int GetFreePlaces();
-        ReadOnlyCollection<Vehicle> GetVehicles();
+        ReadOnlyCollection<VehicleSchema> GetVehicles();
         bool AddVehicle(Vehicle vehicle);
         bool RemoveVehicle(string vehicleId);
-        void TopUpVehicle(string vehicleId, decimal sum);
+        bool TopUpVehicle(string vehicleId, decimal sum);
         TransactionInfo[] GetLastParkingTransactions();
         string ReadFromLog();
     }

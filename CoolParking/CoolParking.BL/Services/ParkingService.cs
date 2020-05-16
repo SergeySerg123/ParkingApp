@@ -4,118 +4,117 @@
 //       Other validation rules and constructor format went from tests.
 //       Other implementation details are up to you, they just have to match the interface requirements
 //       and tests, for example, in ParkingServiceTests you can find the necessary constructor format and validation rules.
+using CoolParking.BL.Extensions;
 using CoolParking.BL.Interfaces;
 using CoolParking.BL.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
+
 
 namespace CoolParking.BL.Services
 {
     public class ParkingService : IParkingService
     {
-        private readonly Parking Parking;
         private readonly ILogService _logService;
         private readonly ITransactionService _transactionService;
         private readonly ITimerService _withdrawTimer;
         private readonly ITimerService _logTimer;
-        private readonly HttpClient httpClient = new HttpClient();
-        bool disposed = false;
 
         public ParkingService(ITimerService withdrawTimer, ITimerService logTimer, ILogService logService)
         {
-            Parking = Parking.GetInstance();
             _logService = logService;
-            _transactionService = TransactionService.GetInstance();
+            _transactionService = TransactionService.CreateInstance();
             _withdrawTimer = withdrawTimer;
             _logTimer = logTimer;
         }
 
-        // Test of addVehicle TODO Console
         public bool AddVehicle(Vehicle vehicle)
         {
-            var request = new HttpRequestMessage();
-            HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(vehicle), Encoding.UTF8);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            request.RequestUri = new Uri(Settings.BASE_URL_VEHICLES_API);
-            var response =  httpClient.PostAsync(Settings.BASE_URL_VEHICLES_API, httpContent);
-            var vehicleAsJson =  response.Result.Content.ReadAsStringAsync();
-            var v = JsonConvert.DeserializeObject<Vehicle>(vehicleAsJson.Result);
-            return (v != null);
+            using(var client = new HttpClient())
+            {
+                VehicleSchema vehicleSchema = vehicle.ToVehicleSchema();
+                client.BaseAddress = new Uri(Settings.BASE_URL);
+                var res = client.PostAsJsonAsync("api/vehicles", vehicleSchema).Result;
+                return res.IsSuccessStatusCode;
+            }
+            
         }
 
         public bool RemoveVehicle(string vehicleId)
         {
-            Parking.RemoveVehicle(vehicleId);
-            return true;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Settings.BASE_URL);
+                var res = client.DeleteAsync("api/vehicles/" + vehicleId).Result;
+                return res.IsSuccessStatusCode;
+            }
         }
 
-        public void TopUpVehicle(string vehicleId, decimal sum)
+        public bool TopUpVehicle(string vehicleId, decimal sum)
         {
-            Parking.TopUpVehicle(vehicleId, sum);
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Settings.BASE_URL);
+                var res = client.PutAsJsonAsync("api/transactions/topupvehicle", new TopUpSchema { Id = vehicleId, Sum = sum}).Result;
+                return res.IsSuccessStatusCode;
+            }
         }
 
        
-        public ReadOnlyCollection<Vehicle> GetVehicles()
+        public ReadOnlyCollection<VehicleSchema> GetVehicles()
         {
-            var response = httpClient.GetStringAsync(Settings.BASE_URL_VEHICLES_API);
-            string vehicles =  response.Result;
-            return JsonConvert.DeserializeObject<ReadOnlyCollection<Vehicle>>(vehicles);
+            using (var client = new HttpClient())
+            {
+                var response = client.GetStringAsync(Settings.BASE_URL_VEHICLES_API);
+                string vehicles = response.Result;
+                return JsonConvert.DeserializeObject<ReadOnlyCollection<VehicleSchema>>(vehicles);
+            }                
         }
 
-        public decimal GetBalance() 
+        public decimal GetBalance()
         {
-            var response = httpClient.GetStringAsync(Settings.BASE_URL_PARKING_API + "balance");
-            string balance = response.Result;
-            return decimal.Parse(balance);
-        } 
+            using (var client = new HttpClient())
+            {
+                var response = client.GetStringAsync(Settings.BASE_URL_PARKING_API + "balance");
+                string balance = response.Result;
+                var b = decimal.Parse(balance, CultureInfo.InvariantCulture);
+                return Math.Round(b, 2);
+
+            }
+        }
+
 
         public int GetCapacity()
         {
-            var response = httpClient.GetStringAsync(Settings.BASE_URL_PARKING_API + "capacity");
-            string capacity = response.Result;
-            return int.Parse(capacity);
+            using (var client = new HttpClient())
+            {
+                var response = client.GetStringAsync(Settings.BASE_URL_PARKING_API + "capacity");
+                string capacity = response.Result;
+                return int.Parse(capacity);
+            }               
         }
 
         public int GetFreePlaces()
         {
-            var response = httpClient.GetStringAsync(Settings.BASE_URL_PARKING_API + "freePlaces");
-            string freePlaces = response.Result;
-            return int.Parse(freePlaces);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        // Protected implementation of Dispose pattern.
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposed)
-                return;
-
-            if (disposing)
+            using (var client = new HttpClient())
             {
-                Parking.Distruct();
-                _logTimer.Dispose();
-            }
-
-            disposed = true;
+                var response = client.GetStringAsync(Settings.BASE_URL_PARKING_API + "freePlaces");
+                string freePlaces = response.Result;
+                return int.Parse(freePlaces);
+            }               
         }
-
-        //~ParkingService()
-        //{
-        //    Dispose(false);
-        //}
 
         public TransactionInfo[] GetLastParkingTransactions()
         {
-            return _transactionService.GetLastParkingTransactions();
+            using (var client = new HttpClient())
+            {
+                var response = client.GetStringAsync(Settings.BASE_URL_TRANSACTIONS_API + "last");
+                var vehicles = response.Result;
+                return JsonConvert.DeserializeObject<TransactionInfo[]>(vehicles);
+            }
         }
 
         public string ReadFromLog()

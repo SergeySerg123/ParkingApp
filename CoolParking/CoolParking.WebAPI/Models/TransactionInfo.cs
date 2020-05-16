@@ -2,8 +2,8 @@
 //       Necessarily implement the Sum property (decimal) - is used in tests.
 //       Other implementation details are up to you, they just have to meet the requirements of the homework.
 
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 
 namespace CoolParking.WebAPI.Models
 {
@@ -12,12 +12,19 @@ namespace CoolParking.WebAPI.Models
         public TransactionInfo(decimal sum, DateTime dateTime, string vechicleId)
         {
             Sum = sum;
-            DateTime = dateTime;
+            TransactionDate = dateTime;
             VechicleId = vechicleId;
         }
 
-        public decimal Sum { get; set; }
-        public DateTime DateTime { get; set; }
+        [JsonProperty("vehicleId")]
         public string VechicleId { get; set; }
+
+        [JsonProperty("transactionDate")]
+        public DateTime TransactionDate { get; set; }
+
+        [JsonProperty("sum")]
+        public decimal Sum { get; set; }
+       
+        
     }
 }
