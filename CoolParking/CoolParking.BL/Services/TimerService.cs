@@ -48,17 +48,24 @@ namespace CoolParking.BL.Services
             GC.SuppressFinalize(this);
         }
 
-        public void Start()
+        public bool Start()
         {
             using (var client = new HttpClient())
             {
-
+                client.BaseAddress = new Uri(Settings.BASE_URL);
+                var res = client.GetAsync("api/timer/start").Result;
+                return res.IsSuccessStatusCode;
             }
         }
 
-        public void Stop()
+        public bool Stop()
         {
-            timer.Enabled = false;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Settings.BASE_URL);
+                var res = client.GetAsync("api/timer/stop").Result;
+                return res.IsSuccessStatusCode;
+            }
         }
 
         private void Callback(Object source, ElapsedEventArgs e)
