@@ -18,6 +18,8 @@ namespace CoolParking.WebAPI.Helpers
             
         }
 
+        public static bool IsExistingVehicleType(int type) => (type >= 0 && type <= 3);
+
         public static bool IsValidTopUpSum(decimal sum) => sum > 0;
     }
 }

@@ -45,7 +45,8 @@ namespace CoolParking.WebAPI.Controllers
         public IActionResult TopUpVehicle([FromBody]TopUpSchema topUp)
         {
             bool isValidId = IsValidVehicleId(topUp.id);
-            if(isValidId)
+            bool isValidSum = IsValidTopUpSum(topUp.sum);
+            if (isValidId && isValidSum)
             {
                 var vehicle = _parkingService.TopUpVehicle(topUp.id, topUp.sum);
                 if (vehicle != null)
