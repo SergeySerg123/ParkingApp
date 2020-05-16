@@ -56,10 +56,19 @@ namespace CoolParking.BL
                     break;
 
                 case 2:
-                    _withdrawTimer.Stop();
-                    Console.WriteLine("=====================");
-                    Console.WriteLine("Parking stoped!");
-                    Console.WriteLine("=====================");
+                    bool stoped =_withdrawTimer.Stop();
+                    if (stoped)
+                    {
+                        Console.WriteLine("=====================");
+                        Console.WriteLine("Parking stoped!");
+                        Console.WriteLine("=====================");
+                    } else
+                    {
+                        Console.WriteLine("=====================");
+                        Console.WriteLine("Parking stoped ERROR!");
+                        Console.WriteLine("=====================");
+                    }
+                    
                     break;
 
                 case 3:
@@ -67,6 +76,8 @@ namespace CoolParking.BL
                     bool succeed = _parkingService.AddVehicle(v);
                     if (succeed)
                         Console.WriteLine($"Added Vechicle '{v.VehicleType}' with Balance {v.Balance}");
+                    else
+                        Console.WriteLine("Full parking");
                     break;
 
                 case 4:
