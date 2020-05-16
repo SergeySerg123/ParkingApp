@@ -11,30 +11,33 @@ namespace CoolParking.WebAPI.Services
     public class TimerService : ITimerService
     {
         private readonly ITransactionsService _transactionService;
-        private readonly Timer timer;
-        private readonly Parking parking;
+        private Timer timer;
+        private readonly Parking _parking;
 
         public double Interval { get; set; }
         public TimerService(ITransactionsService transactionsService, Parking parking)
         {
             _transactionService = transactionsService;
-            this.timer = new Timer();
-            this.parking = parking;
-            Elapsed += OnTimedEvent;           
-            timer.Elapsed += Callback;          
+            _parking = parking;
+            timer = new Timer();
+            Elapsed += OnTimedEvent;
+            timer.Elapsed += Callback;
             timer.AutoReset = true;
         }
 
-        
+
         public event ElapsedEventHandler Elapsed;
 
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            var vehicles = parking.GetVehicles;
-            foreach(Vehicle v in vehicles)
-            {            
-                _transactionService.CreateTransaction(parking, v);
-            }
+            var vehicles = _parking?.GetVehicles;
+            if(vehicles != null)
+            {
+                foreach (Vehicle v in vehicles)
+                {
+                    _transactionService.CreateTransaction(_parking, v);
+                }
+            }           
         }
 
         public void FireElapsedEvent()
@@ -48,14 +51,16 @@ namespace CoolParking.WebAPI.Services
         }
 
         public void Start()
-        {
+        {            
             timer.Interval = Interval;
-            timer.Enabled = true;
+            timer.Start();
         }
 
         public void Stop()
         {
-            timer.Enabled = false;
+            timer.Stop();
+            timer.Dispose();
+            Dispose();
         }
 
         private void Callback(Object source, ElapsedEventArgs e)
